@@ -1,12 +1,18 @@
-
 class Cliente:
 
-    def __init__(self, nome,freguesia):
+    def __init__(self,id,nome,freguesia):
+        self.id = id
         self.nome = nome
         self.freguesia = freguesia
 
+    def setId(self, id):
+        self.id = id
+
     def setNome(self, nome):
         self.nome = nome
+
+    def getId(self,id):
+        return self.id
 
     def getNome(self):
         return self.nome
@@ -18,7 +24,7 @@ class Cliente:
         return self.freguesia
 
     def __str__(self):
-        return "Nome: " + str(self.getNome()) + "; " + "Freguesia: " + str(self.getFreguesia())
+        return "Id: " + self.id + "; " + "Nome: " + str(self.getNome()) + "; " + "Freguesia: " + str(self.getFreguesia())
 
     def __eq__(self, other):
         if(isinstance(other, Cliente)):

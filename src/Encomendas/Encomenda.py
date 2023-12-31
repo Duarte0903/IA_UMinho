@@ -1,19 +1,25 @@
 class Encomenda:
 
 
-    def __init__(self, cliente , encomenda, peso, volume, prazoEntrega, estado):
-        self.cliente = cliente
-        self.encomenda = encomenda
+    def __init__(self, id_encomenda, id_cliente , peso, volume, prazoEntrega, estado):
+        self.id_encomenda = id_encomenda        
+        self.id_cliente = id_cliente
         self.peso = peso
         self.volume = volume
-        self.prazoEntrega = prazoEntrega
+        self.prazoEntrega = prazoEntrega # prazo de entrega em dias 
         self.estado = estado
 
-    def setCliente(self, cliente):
-        self.cliente = cliente
+    def setId(self, id_encomenda):
+        self.id_encomenda = id_encomenda
 
-    def getCliente(self):
-        return self.cliente
+    def getId(self):
+        return self.id_encomenda
+    
+    def getClienteId(self):
+        return self.id_cliente
+    
+    def setClienteId(self, id_cliente):
+        self.id_cliente = id_cliente
     
     def setEncomenda(self, encomenda):
         self.encomenda = encomenda
@@ -46,7 +52,7 @@ class Encomenda:
         return self.estado
 
     def __str__(self):
-        return "Cliente: " + str(self.getCliente()) + "; " + "Encomenda: " + str(self.getEncomenda()) + "; " + "Peso: " + str(self.getPeso()) + "; " + "Volume: " + str(self.getVolume()) + "; " + "Prazo de Entrega: " + str(self.getPrazo()) + "; " + "Estado: " + str(self.getEstado())
+        return "Id: " + str(self.getId()) + "; " + "Cliente: " + str(self.getClienteId()) + "; " + "Peso: " + str(self.getPeso()) + "; " + "Volume: " + str(self.getVolume()) + "; " + "Prazo: " + str(self.getPrazo()) + "; " + "Estado: " + str(self.getEstado())
 
     def __eq__(self, other):
         if(isinstance(other,Encomenda)):

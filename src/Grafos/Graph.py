@@ -4,7 +4,9 @@ import math
 import networkx as nx  # biblioteca de tratamento de grafos necessária para desnhar graficamente o grafo
 import matplotlib.pyplot as plt  # idem
 
-from Node import Node
+from geopy.distance import geodesic
+
+from Grafos.Node import *
 
 class Graph:
     
@@ -84,41 +86,37 @@ class Graph:
         # Retorna a lista de vizinhos do nó fornecido
         return lista 
     
-# - add_heuristica: define heuristica para cada nodo
-
-    def add_heuristica(self, n, estima):
-        n1 = Node(n)
-        if n1 in self.m_nodes:
-            self.m_h[n] = estima
-    
-# - heuristica: define heuristica para cada nodo 1 por defeito
-
-    def heuristica(self):
-        nodos = self.m_graph.keys
-        for n in nodos:
-            self.m_h[n] = 1
-        return (True)
-    
-# - calcula_est: recebe um dicionário de estimativas e retorna a chave (nó) associada à menor estimativa presente no dicionário
-    
-    def calcula_est(self, estima):
-        # Transforma as chaves do dicionário 'estima' em uma lista
-        l = list(estima.keys())
-        # Inicializa a variável 'min_estima' com o valor da primeira estimativa
-        min_estima = estima[l[0]]
-        # Inicializa a variável 'node' com a chave correspondente à primeira estimativa
-        node = l[0]
+    def add_heuristica(self, node1, node2):
+        coord1 = self.get_coord_by_name(node1)
+        coord2 = self.get_coord_by_name(node2)
         
-        # Percorre todas as chaves e valores do dicionário 'estima'
-        for k, v in estima.items():
-            # Verifica se o valor atual é menor do que o valor mínimo encontrado até agora
-            if v < min_estima:
-                # Se for menor, atualiza o valor mínimo e o nó correspondente
-                min_estima = v
-                node = k
-                
-        # Retorna o nó associado à estimativa mínima encontrada no dicionário
-        return node
+        if coord1 is not None and coord2 is not None:
+            distancia_km = geodesic(coord1, coord2).kilometers
+            distancia_int = round(distancia_km)
+            self.m_h[node1] = distancia_int
+        else:
+            print("Coordenadas não encontradas para calcular a heurística.")
+
+
+    def get_coord_by_name(self, name):
+        coordenadas = {
+            "Health Planet": (41.719444, -8.298333),
+            "Balança": (41.7025, -8.311389),
+            "Covide": (41.738611, -8.213889 ),
+            "Souto": (41.693333, -8.343056),
+            "Ribeira": (41.696389, -8.330833),
+            "Valdosende": (41.667778, -8.233056),
+            "Rio Caldo": (41.677222, -8.197222),
+            "Chorense e Monte": (41.7, -8.271667),
+            "Vilar da Veiga": (41.745556, -8.169722),
+            "Chamoim e Vilar": (41.723611, -8.2625),
+            "Gondoriz": (41.735278, -8.301944),
+            "Carvalheira": (41.746389, -8.234444),
+            "Campo do Gerês": (41.759167, -8.195),
+            "Cibões e Brufe": (41.754167, -8.26)
+        }
+        
+        return coordenadas.get(name)
     
 # - Devolve heuristica do nodo
 
@@ -154,22 +152,34 @@ class Graph:
 # - desenha: Desenha graficamente o grafo
 
     def desenha(self):
-        ##criar lista de vertices
         lista_v = self.m_nodes
         lista_a = []
         g = nx.Graph()
+        
         for nodo in lista_v:
             n = nodo.getName()
-            g.add_node(n)
+            heuristica = self.getH(n)  
+            g.add_node(n, heuristic=heuristica, label=n) 
+            
             for (adjacente, peso) in self.m_graph[n]:
                 lista = (n, adjacente)
-                # lista_a.append(lista)
                 g.add_edge(n, adjacente, weight=peso)
 
         pos = nx.spring_layout(g)
-        nx.draw_networkx(g, pos, with_labels=True, font_weight='bold')
+        
+        node_labels = {}
+        for node, position in pos.items():
+            x, y = position
+            node_labels[node] = (x, y + 0.05)
+            
+        nx.draw_networkx_nodes(g, pos, node_size=500)
+        nx.draw_networkx_edges(g, pos)
+        
+        node_labels_combined = {node: f"{node}\nHeurística: {g.nodes[node]['heuristic']}" for node in g.nodes()}
+        nx.draw_networkx_labels(g, node_labels, labels=node_labels_combined, font_color='black', font_weight='bold')
+        
         labels = nx.get_edge_attributes(g, 'weight')
         nx.draw_networkx_edge_labels(g, pos, edge_labels=labels)
-
-        plt.draw()
+        
+        plt.axis('off')
         plt.show()
