@@ -1,4 +1,6 @@
 from Graph import Graph
+from NaoInformada import *
+from Informada import *
 
 def main():
     g = Graph()
@@ -40,21 +42,57 @@ def main():
     
 
     saida = -1
-    while saida != 0:
+    while saida != 5:
         print("1-Imprimir Grafo")
         print("2-Desenhar Grafo")
-        print("3-Sair")
+        print("3-DFS")
+        print("4-BFS")
+        print("5-Gulosa")
+        print("6-A*")
+        print("7-Sair")
 
         saida = int(input("Introduza a sua opcao -> "))
         if saida == 1:
             print(g.m_graph)
             l = input("Prima Enter para continuar.")
-        elif saida == 2:
+            saida = int(input("Introduza a sua opcao -> "))
+            
+        if saida == 2:
             g.desenha()
             l = input("Prima Enter para continuar.")
-        elif saida == 3:
+            saida = int(input("Introduza a sua opcao -> "))
+        
+        if saida == 3:
+            inicio = input("Nodo inicial->")
+            fim = input("Nodo final->")
+            print(procura_DFS(g, inicio, fim, path=[], visited=set()))
+            l = input("Prima enter para continuar.")
+            saida = int(input("Introduza a sua opcao -> "))
+        
+        if saida == 4:
+            inicio = input("Nodo inicial->")
+            fim = input("Nodo final->")
+            print(procura_BFS(g, inicio, fim))
+            l = input("Prima enter para continuar.")
+            saida = int(input("Introduza a sua opcao -> "))
+            
+        if saida == 5:
+            inicio = input("Nodo inicial->")
+            fim = input("Nodo final->")
+            print(gulosa(g, inicio, fim))
+            l = input("Prima enter para continuar.")
+            saida = int(input("Introduza a sua opcao -> "))
+        
+        if saida == 6:
+            inicio = input("Nodo inicial->")
+            fim = input("Nodo final->")
+            print(procura_aStar(g, inicio, fim))
+            l = input("Prima enter para continuar.")
+            saida = int(input("Introduza a sua opcao -> "))
+        
+        if saida == 7:
             print("Encerrado")
-            break
+        break
 
 if __name__ == "__main__":
     main()

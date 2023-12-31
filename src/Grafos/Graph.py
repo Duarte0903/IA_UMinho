@@ -1,6 +1,5 @@
 # Classe grafo para representaçao de grafos,
 import math
-from queue import Queue
 
 import networkx as nx  # biblioteca de tratamento de grafos necessária para desnhar graficamente o grafo
 import matplotlib.pyplot as plt  # idem
@@ -15,6 +14,7 @@ class Graph:
         self.m_nodes = []               # - Lista dos nós do grafo
         self.m_directed = directed      # - Indica se o grafo é direcionado
         self.m_graph = {}               # dicionario para armazenar os nodos e arestas
+        self.m_h = {}  # dicionario para posterirmente armazenar as heuristicas para cada nodo -< pesquisa info
         
 # - __str__: escrever o grafo como string
 # - Return: Uma string representando o grafo
@@ -23,6 +23,16 @@ class Graph:
         for key in self.m_graph.keys():
             out = out + "node" + str(key) + ": " + str(self.m_graph[key]) + "\n"
         return out
+    
+# - Encontrar nodo pelo nome
+
+    def get_node_by_name(self, name):
+        search_node = Node(name)
+        for node in self.m_nodes:
+            if node == search_node:
+                return node
+            else:
+                return None
     
 # - imprime_aresta: imprimir arestas
 # - return: uma string representando todas as arestas do grafo
@@ -59,8 +69,67 @@ class Graph:
 # - getNodes: Retorna a lista de nós do grafo
     def getNodes(self):
         return self.m_nodes
+    
+# - getNeighbours é responsável por retornar uma lista de vizinhos de um determinado nó dentro do grafo
+    
+    def getNeighbours(self, nodo):
+        lista = []  # Inicializa uma lista vazia para armazenar os vizinhos do nó
+        
+        # Itera sobre os vizinhos (adjacentes) e seus pesos no grafo associado ao nó fornecido
+        for (adjacente, peso) in self.m_graph[nodo]:
+        
+            # Adiciona o vizinho atual à lista de vizinhos com seu respectivo peso
+            lista.append((adjacente, peso))  
+        
+        # Retorna a lista de vizinhos do nó fornecido
+        return lista 
+    
+# - add_heuristica: define heuristica para cada nodo
 
-# - get_arc_cost: devolver o custo de uma aresta
+    def add_heuristica(self, n, estima):
+        n1 = Node(n)
+        if n1 in self.m_nodes:
+            self.m_h[n] = estima
+    
+# - heuristica: define heuristica para cada nodo 1 por defeito
+
+    def heuristica(self):
+        nodos = self.m_graph.keys
+        for n in nodos:
+            self.m_h[n] = 1
+        return (True)
+    
+# - calcula_est: recebe um dicionário de estimativas e retorna a chave (nó) associada à menor estimativa presente no dicionário
+    
+    def calcula_est(self, estima):
+        # Transforma as chaves do dicionário 'estima' em uma lista
+        l = list(estima.keys())
+        # Inicializa a variável 'min_estima' com o valor da primeira estimativa
+        min_estima = estima[l[0]]
+        # Inicializa a variável 'node' com a chave correspondente à primeira estimativa
+        node = l[0]
+        
+        # Percorre todas as chaves e valores do dicionário 'estima'
+        for k, v in estima.items():
+            # Verifica se o valor atual é menor do que o valor mínimo encontrado até agora
+            if v < min_estima:
+                # Se for menor, atualiza o valor mínimo e o nó correspondente
+                min_estima = v
+                node = k
+                
+        # Retorna o nó associado à estimativa mínima encontrada no dicionário
+        return node
+    
+# - Devolve heuristica do nodo
+
+    def getH(self, nodo):
+        if nodo not in self.m_h.keys():
+            return 1000
+        else:
+            return (self.m_h[nodo])
+
+# - responsável por recuperar o custo de uma aresta entre dois nós específicos no grafo
+
     def get_arc_cost(self, node1, node2):
         custoT = math.inf
         a = self.m_graph[node1]  # lista de arestas para aquele nodo
@@ -70,8 +139,20 @@ class Graph:
 
         return custoT
 
+# - retorna o custo de um determinado caminho 
+
+    def calcula_custo(self, caminho):
+        # caminho é uma lista de nodos
+        teste = caminho
+        custo = 0
+        i = 0
+        while i + 1 < len(teste):
+            custo = custo + self.get_arc_cost(teste[i], teste[i + 1])
+            i = i + 1
+        return custo 
+
 # - desenha: Desenha graficamente o grafo
-# - Funcionamento: Usa a biblioteca NetworkX para criar e desenhar o grafo com base nos nós e arestas armazenados no dicionário m_graph
+
     def desenha(self):
         ##criar lista de vertices
         lista_v = self.m_nodes
