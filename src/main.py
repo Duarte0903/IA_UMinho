@@ -60,7 +60,7 @@ def main():
     sistema.carregar_encomendas_pendentes()
 
     saida = -1
-    while saida != 5:
+    while saida != 0:
         print("1-Imprimir Grafo")
         print("2-Desenhar Grafo")
         print("3-DFS")
@@ -77,64 +77,54 @@ def main():
         if saida == 1:
             print(g.m_graph)
             l = input("Prima Enter para continuar.")
-            saida = int(input("Introduza a sua opcao -> "))
             
         if saida == 2:
             g.desenha()
             l = input("Prima Enter para continuar.")
-            saida = int(input("Introduza a sua opcao -> "))
         
         if saida == 3:
             inicio = input("Nodo inicial->")
             fim = input("Nodo final->")
             print(procura_DFS(g, inicio, fim, path=[], visited=set()))
             l = input("Prima enter para continuar.")
-            saida = int(input("Introduza a sua opcao -> "))
         
         if saida == 4:
             inicio = input("Nodo inicial->")
             fim = input("Nodo final->")
             print(procura_BFS(g, inicio, fim))
             l = input("Prima enter para continuar.")
-            saida = int(input("Introduza a sua opcao -> "))
             
         if saida == 5:
             inicio = input("Nodo inicial->")
             fim = input("Nodo final->")
             print(gulosa(g, inicio, fim))
             l = input("Prima enter para continuar.")
-            saida = int(input("Introduza a sua opcao -> "))
         
         if saida == 6:
             inicio = input("Nodo inicial->")
             fim = input("Nodo final->")
             print(procura_aStar(g, inicio, fim))
             l = input("Prima enter para continuar.")
-            saida = int(input("Introduza a sua opcao -> "))
 
         if saida == 7:
             sistema.adicionar_cliente()
             l = input("Prima Enter para continuar.")
-            saida = int(input("Introduza a sua opcao -> "))
 
         if saida == 8:
             sistema.ver_clientes()
             l = input("Prima Enter para continuar.")
-            saida = int(input("Introduza a sua opcao -> "))
 
         if saida == 9:
             sistema.criar_encomenda()
             l = input("Prima Enter para continuar.")
-            saida = int(input("Introduza a sua opcao -> "))
 
         if saida == 10:
             sistema.ver_encomendas_pendentes()
             l = input("Prima Enter para continuar.")
-            saida = int(input("Introduza a sua opcao -> "))
         
         if saida == 0:
             print("Encerrado")
-        break
+            break
 
 if __name__ == "__main__":
     main()

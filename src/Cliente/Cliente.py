@@ -11,7 +11,7 @@ class Cliente:
     def setNome(self, nome):
         self.nome = nome
 
-    def getId(self,id):
+    def getId(self):
         return self.id
 
     def getNome(self):

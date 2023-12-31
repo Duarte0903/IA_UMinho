@@ -4,6 +4,8 @@ from Encomendas.Encomenda import Encomenda
 from Estafeta.Estafeta import Estafeta
 import os
 from pathlib import Path 
+from Pesquisas.NaoInformada import *
+from Pesquisas.Informada import *
 
 class Sistema:
 
@@ -93,6 +95,10 @@ class Sistema:
 
                         encomenda = Encomenda(id_encomenda, id_cliente, peso, volume, prazoEntrega, "Pendente")
 
+                        if not self.valida_tempo(encomenda):
+                            print("Prazo de entrega impossível de ser cumprido")
+                            break
+
                         self.adicionar_encomenda_pendente(encomenda)
 
                         print("Encomenda adicionada com sucesso")
@@ -128,7 +134,17 @@ class Sistema:
 
     ###Processamento de Encomendas###
 
-    
+    def valida_tempo(self, encomenda):
+        inicio = "Health Planet"
+        fim = self.procura_cliente(encomenda.getClienteId()).getFreguesia()
+        
+        (path, custo) = gulosa(self.m_Grafo, inicio, fim)
+
+        tipo_veiculo = self.get_tipo_veiculos(encomenda.getPeso())
+
+        velocidade = self.calcula_velocidade(encomenda.getPeso(), tipo_veiculo)
+
+        return encomenda.getPrazo() >= custo / velocidade
 
     ###Clientes###
         
@@ -191,3 +207,38 @@ class Sistema:
 
     def adicionar_estafeta(self, estafeta):
         self.m_Estafetas.append(estafeta)
+
+    ###Veiculos###
+    
+    def get_tipo_veiculos(self, peso):
+        if peso <= 5:
+            return "Bicicleta"
+        elif peso <= 20:
+            return "Mota"
+        elif peso <= 100:
+            return "Carro"
+        else:
+            return None
+        
+    def calcula_velocidade(self, peso, tipo):
+        if tipo == "Bicicleta":
+            velocidade = 10
+            i = peso
+            while i > 0:
+                velocidade -= 0.6
+                i = i-1
+            return velocidade
+        elif tipo == "Mota":
+            velocidade = 35
+            i = peso
+            while i > 0:
+                velocidade -= 0.5
+                i = i-1
+            return velocidade
+        else:
+            velocidade = 50
+            i = peso
+            while i > 0:
+                velocidade -= 0.1
+                i = i-1
+            return velocidade
