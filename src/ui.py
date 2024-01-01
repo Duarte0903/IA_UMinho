@@ -4,13 +4,11 @@ from Encomendas.Encomenda import Encomenda
 from Estafeta.Estafeta import Estafeta
 import os
 from pathlib import Path 
-from Pesquisas.NaoInformada import *
-from Pesquisas.Informada import *
 
-class Sistema:
+class UI:
 
-    def __init__ (self,grafo):
-        self.m_Grafo = grafo
+    def __init__ (self, graph):
+        self.graph = graph
         self.m_Encomendas = {} #dicionaio que associa um cliente a uma lista encomenda
         self.m_Clientes = [] #lista de clientes
         self.m_Estafetas = []
@@ -135,10 +133,11 @@ class Sistema:
     ###Processamento de Encomendas###
 
     def valida_tempo(self, encomenda):
+        g = Graph()
         inicio = "Health Planet"
         fim = self.procura_cliente(encomenda.getClienteId()).getFreguesia()
         
-        (path, custo) = gulosa(self.m_Grafo, inicio, fim)
+        (path, custo) = g.gulosa(self.m_Grafo, inicio, fim)
 
         tipo_veiculo = self.get_tipo_veiculos(encomenda.getPeso())
 
@@ -242,3 +241,4 @@ class Sistema:
                 velocidade -= 0.1
                 i = i-1
             return velocidade
+        

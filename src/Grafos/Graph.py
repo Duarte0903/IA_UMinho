@@ -1,5 +1,6 @@
 # Classe grafo para representaçao de grafos,
 import math
+from queue import Queue
 
 import networkx as nx  # biblioteca de tratamento de grafos necessária para desnhar graficamente o grafo
 import matplotlib.pyplot as plt  # idem
@@ -183,3 +184,151 @@ class Graph:
         
         plt.axis('off')
         plt.show()
+
+    def procura_DFS(self, start, end, path=[], visited=set()):
+        path.append(start)
+        visited.add(start)
+
+        if start == end:
+            custoT = self.calcula_custo(path)
+            return (path,round(custoT,1),visited)
+        
+        for (adjacente,peso) in self.m_graph[start]:
+            if adjacente not in visited:
+                resultado = self.procura_DFS(adjacente,end,path,visited)
+                if resultado is not None:
+                    return resultado
+        
+        path.pop()
+        return None
+
+    def procura_BFS(self, start, end):
+        visited = set()
+        fila = Queue()
+        custo = 0
+        fila.put(start)
+        visited.add(start)
+
+        parent = dict()
+        parent[start] = None
+
+        path_found = False
+        while not fila.empty() and path_found == False:
+            nodo_atual = fila.get()
+            if nodo_atual == end:
+                path_found = True
+            else:
+                for (adjacente,peso) in self.m_graph[nodo_atual]:
+                    if adjacente not in visited:
+                        fila.put(adjacente)
+                        parent[adjacente] = nodo_atual
+                        visited.add(adjacente)
+
+        path = []
+        if path_found:
+            path.append(end)
+            while parent[end] is not None:
+                path.append(parent[end])
+                end = parent[end]
+            path.reverse()
+
+            # função que calcula o custo do caminho
+            custo = self.calcula_custo(path)
+        return (path,round(custo,1),visited)  
+
+    def procura_aStar(self, start, end):
+        open_list = {start}
+        closed_list = set([])
+
+        g = {}  
+
+        g[start] = 0
+
+        parents = {}
+        parents[start] = start
+
+        while len(open_list) > 0:
+            n = None
+
+            for v in open_list:
+                if (n == None) or (g[v] + self.getH(v) < g[n] + self.getH(n)):  
+                    n = v
+            if n == None:
+                print('Path does not exist!')
+                return None
+
+            if n == end:
+                reconst_path = []
+
+                while parents[n] != n:
+                    reconst_path.append(n)
+                    n = parents[n]
+
+                reconst_path.append(start)
+
+                reconst_path.reverse()
+
+                return (reconst_path, round(self.calcula_custo(reconst_path),1),closed_list)
+
+            for (m, weight) in self.getNeighbours(n): 
+                if m not in open_list and m not in closed_list:
+                    open_list.add(m)
+                    parents[m] = n
+                    g[m] = g[n] + weight
+
+                else:
+                    if g[m] > g[n] + weight:
+                        g[m] = g[n] + weight
+                        parents[m] = n
+
+                        if m in closed_list:
+                            closed_list.remove(m)
+                            open_list.add(m)
+
+            open_list.remove(n)
+            closed_list.add(n)
+
+        print('Path does not exist!')
+        return None
+        
+    def gulosa(self, start, end):
+        open_list = set([start])
+        closed_list = set([])
+
+        parents = {}
+        parents[start] = start
+
+        while len(open_list) > 0:
+            n = None
+
+            for v in open_list:
+                if n == None or self.m_h[v] < self.m_h[n]:
+                    n = v
+
+            if n == None:
+                print('Path does not exist!')
+                return None
+
+            if n == end:
+                reconst_path = []
+
+                while parents[n] != n:
+                    reconst_path.append(n)
+                    n = parents[n]
+
+                reconst_path.append(start)
+
+                reconst_path.reverse()
+
+                return (reconst_path, round(self.calcula_custo(reconst_path),1),closed_list)
+            
+            for (m, weight) in self.getNeighbours(n):
+                if m not in open_list and m not in closed_list:
+                    open_list.add(m)
+                    parents[m] = n
+                    
+            open_list.remove(n)
+            closed_list.add(n)
+
+        print('Path does not exist!')
+        return None

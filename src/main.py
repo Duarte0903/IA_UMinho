@@ -1,7 +1,5 @@
 from Grafos.Graph import *
-from Pesquisas.Informada import *
-from Pesquisas.NaoInformada import *
-from sistema import *
+from ui import *
 
 def main():
 
@@ -54,10 +52,10 @@ def main():
     g.add_heuristica("Campo do Gerês", "Health Planet")
     g.add_heuristica("Health Planet", "Health Planet")
     
-    sistema = Sistema(g)
+    ui = UI(g)
 
-    sistema.carregar_clientes()
-    sistema.carregar_encomendas_pendentes()
+    ui.carregar_clientes()
+    ui.carregar_encomendas_pendentes()
 
     saida = -1
     while saida != 0:
@@ -78,51 +76,66 @@ def main():
             print(g.m_graph)
             l = input("Prima Enter para continuar.")
             
-        if saida == 2:
+        elif saida == 2:
             g.desenha()
             l = input("Prima Enter para continuar.")
         
-        if saida == 3:
+        elif saida == 3:
             inicio = input("Nodo inicial->")
             fim = input("Nodo final->")
-            print(procura_DFS(g, inicio, fim, path=[], visited=set()))
+            print(g.procura_DFS(inicio, fim, path=[], visited=set()))
             l = input("Prima enter para continuar.")
         
-        if saida == 4:
+        elif saida == 4:
             inicio = input("Nodo inicial->")
             fim = input("Nodo final->")
-            print(procura_BFS(g, inicio, fim))
+            print(g.procura_BFS(inicio, fim))
             l = input("Prima enter para continuar.")
             
-        if saida == 5:
+        elif saida == 5:
             inicio = input("Nodo inicial->")
             fim = input("Nodo final->")
-            print(gulosa(g, inicio, fim))
+            print(g.gulosa(inicio, fim))
             l = input("Prima enter para continuar.")
         
-        if saida == 6:
+        elif saida == 6:
             inicio = input("Nodo inicial->")
             fim = input("Nodo final->")
-            print(procura_aStar(g, inicio, fim))
+            print(g.procura_aStar(inicio, fim))
             l = input("Prima enter para continuar.")
 
-        if saida == 7:
-            sistema.adicionar_cliente()
+        elif saida == 7:
+            ui.adicionar_cliente()
             l = input("Prima Enter para continuar.")
 
-        if saida == 8:
-            sistema.ver_clientes()
+        elif saida == 8:
+            ui.ver_clientes()
             l = input("Prima Enter para continuar.")
 
-        if saida == 9:
-            sistema.criar_encomenda()
+        elif saida == 9:
+            ui.criar_encomenda()
             l = input("Prima Enter para continuar.")
 
-        if saida == 10:
-            sistema.ver_encomendas_pendentes()
+        elif saida == 10:
+            ui.ver_encomendas_pendentes()
             l = input("Prima Enter para continuar.")
+            
+        #print("1 - Ver Clientes registados no Sistema")
+        #print("2 - Ver Estafetas registados no Sistema")
+        #print("3 - Ver Veiculos registados no Sistema")
+        #print("4 - Adicionar Estafeta")
+        #print("5 - Adicionar Veículo")
+        #print("6 - Ver Encomendas do Sistema")
+        #print("7 - Ver Entregas Concluídas do Sistema")
+        #print("8 - Lançar Entregas Pendentes")
+        #print("9 - Ranking dos Estafetas Classificação")
+        #print("10 - Ranking dos Estafetas Ecológicos")
         
-        if saida == 0:
+        #print("1 - Criar Encomenda")
+        #print("2 - Lista de Encomendas")
+       # print("3 - Lista de Entregas")
+        
+        elif saida == 0:
             print("Encerrado")
             break
 
