@@ -35,7 +35,7 @@ class Mota:
         return self.limite_peso
     
     def __str__(self):
-        return "Estafeta: " + self.idDono + "; " + "Tipo: " + self.tipo + "; " + "Matricula: " + self.matricula + "; " + "Perda: " + str(self.perdaVelocidade) + "; " + "Velocidade Media: " + str(self.velocMedia) + "; " + "Limite de Peso: " + str(self.limitePeso)
+        return self.idDono + ";" + self.tipo + ";" + self.matricula + ";" + str(self.perdaVelocidade) + ";" + str(self.velocMedia) + ";" + str(self.limitePeso)
 
     def __eq__(self, other):
         if(isinstance(other,Mota)):

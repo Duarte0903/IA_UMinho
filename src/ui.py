@@ -209,17 +209,27 @@ class UI:
 
     ###Estafetas###
 
-    def carregar_estafetas(self): # arranjar esta função 
+    def carregar_estafetas(self):
         try:
             with open(self.caminho_arquivo_Estafetas, 'r') as ficheiro:
                 for linha in ficheiro:
                     if linha.strip():
                         data = linha.strip().split(';')
-                        if len(data) == 3:
-                            id_estafeta, nome, tipo, matricula, perda, velocidade, limite = data
-                            
+                        if len(data) == 8:
+                            id_estafeta, nome, id_estafeta2, tipo, matricula, perda, velocidade, peso = data
+
+                            if tipo == "bicicleta":
+                                veiculo = Bicicleta(id_estafeta, matricula)
+
+                            elif tipo == "mota":
+                                veiculo = Mota(id_estafeta, matricula)
+
+                            elif tipo == "carro":
+                                veiculo = Carro(id_estafeta, matricula)
+
                             estafeta = Estafeta(id_estafeta, nome, veiculo)
-                            self.m_Estafetas[id_estafeta] = estafeta
+
+                            self.m_Estafetas[estafeta] = []
                         else:
                             print(f"Ignoring line due to incorrect format: {linha}")
                     else:
@@ -247,12 +257,12 @@ class UI:
         elif tipo_veiculo == "carro":
             veiculo = Carro(id_estafeta, matricula)
 
-        if veiculo is not None:  # Check if veiculo is assigned a value
+        if veiculo is not None:
             if self.procura_estafeta(id_estafeta) is None:
                 estafeta = Estafeta(id_estafeta, nome, veiculo)
 
                 if estafeta not in self.m_Estafetas:
-                    self.m_Estafetas[estafeta] = estafeta
+                    self.m_Estafetas[estafeta] = []
 
                     ficheiro = open(self.caminho_arquivo_Estafetas, 'a+')
                     ficheiro.write(id_estafeta + ';' + nome + ';' + str(veiculo) + '\n') # modificar a escrita de valores dos veiculos
