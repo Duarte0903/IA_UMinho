@@ -56,6 +56,7 @@ def main():
 
     ui.carregar_clientes()
     ui.carregar_encomendas_pendentes()
+    ui.carregar_estafetas()
 
     saida = -1
     while saida != 0:
@@ -69,6 +70,8 @@ def main():
         print("8-Ver clientes")
         print("9-Adicionar Encomenda")
         print("10-Ver encomendas pendentes")
+        print("11-Criar estafeta")
+        print("12-Ver estafetas")
         print("0-Sair")
 
         saida = int(input("Introduza a sua opcao -> "))
@@ -118,6 +121,14 @@ def main():
 
         elif saida == 10:
             ui.ver_encomendas_pendentes()
+            l = input("Prima Enter para continuar.")
+
+        elif saida == 11:
+            ui.criar_estafeta()
+            l = input("Prima Enter para continuar.")
+
+        elif saida == 12:
+            ui.ver_estafetas()
             l = input("Prima Enter para continuar.")
             
         #print("1 - Ver Clientes registados no Sistema")

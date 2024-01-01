@@ -2,17 +2,22 @@ from Grafos.Graph import *
 from Cliente.Cliente import Cliente
 from Encomendas.Encomenda import Encomenda
 from Estafeta.Estafeta import Estafeta
+from Veiculos.Bicicleta import *
+from Veiculos.Mota import *
+from Veiculos.Carro import *
 import os
 from pathlib import Path 
+import random
+import string
 
 class UI:
 
     def __init__ (self, graph):
         self.graph = graph
-        self.m_Encomendas = {} #dicionaio que associa um cliente a uma lista encomenda
-        self.m_Clientes = [] #lista de clientes
-        self.m_Estafetas = []
-        self.m_encomendas_pendentes = []
+        self.m_Encomendas = {}                  #dicionaio que associa um cliente a uma lista encomendas
+        self.m_Clientes = []                    #lista de clientes
+        self.m_Estafetas = {}                   #dicionario que associa um estafeta a uma lista de encomendas
+        self.m_encomendas_pendentes = []        #lista de encomendas pendentes
 
     ###ficheiros###
 
@@ -204,8 +209,74 @@ class UI:
 
     ###Estafetas###
 
-    def adicionar_estafeta(self, estafeta):
-        self.m_Estafetas.append(estafeta)
+    def carregar_estafetas(self): # arranjar esta função 
+        try:
+            with open(self.caminho_arquivo_Estafetas, 'r') as ficheiro:
+                for linha in ficheiro:
+                    if linha.strip():
+                        data = linha.strip().split(';')
+                        if len(data) == 3:
+                            id_estafeta, nome, tipo, matricula, perda, velocidade, limite = data
+                            
+                            estafeta = Estafeta(id_estafeta, nome, veiculo)
+                            self.m_Estafetas[id_estafeta] = estafeta
+                        else:
+                            print(f"Ignoring line due to incorrect format: {linha}")
+                    else:
+                        print("Skipping empty line.")
+        except FileNotFoundError:
+            print("File not found or path is incorrect.")
+        except Exception as e:
+            print(f"An error occurred: {e}")
+
+    def criar_estafeta(self):
+        nome = input("Introduza o nome do estafeta: ")
+        id_estafeta = str(len(self.m_Estafetas))
+
+        characters = string.ascii_letters + string.digits  # All letters (uppercase and lowercase) and digits
+        matricula = ''.join(random.choice(characters) for i in range(6))
+
+        tipo_veiculo = input("Introduza o tipo de veiculo do estafeta: ")
+
+        if tipo_veiculo == "bicicleta":
+            veiculo = Bicicleta(id_estafeta, matricula)
+
+        elif tipo_veiculo == "mota":
+            veiculo = Mota(id_estafeta, matricula)
+
+        elif tipo_veiculo == "carro":
+            veiculo = Carro(id_estafeta, matricula)
+
+        if veiculo is not None:  # Check if veiculo is assigned a value
+            if self.procura_estafeta(id_estafeta) is None:
+                estafeta = Estafeta(id_estafeta, nome, veiculo)
+
+                if estafeta not in self.m_Estafetas:
+                    self.m_Estafetas[estafeta] = estafeta
+
+                    ficheiro = open(self.caminho_arquivo_Estafetas, 'a+')
+                    ficheiro.write(id_estafeta + ';' + nome + ';' + str(veiculo) + '\n') # modificar a escrita de valores dos veiculos
+
+                    ficheiro2 = open(self.caminho_arquivo_Veiculos, 'a+')
+                    ficheiro2.write(id_estafeta + ';' + matricula + ';' + tipo_veiculo + '\n')
+
+                    print("Estafeta adicionado com sucesso")
+                else:
+                    print("Estafeta já existe")
+            else:
+                print("Estafeta não pode ser adicionado, pois já existe")
+        else:
+            print("Tipo de veículo inválido")
+
+    def procura_estafeta(self, id_estafeta):
+        for estafeta in self.m_Estafetas:
+            if estafeta.id == id_estafeta:
+                return estafeta
+        return None
+
+    def ver_estafetas(self):
+        for estafeta in self.m_Estafetas.keys():
+            print(estafeta)
 
     ###Veiculos###
     

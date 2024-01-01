@@ -1,10 +1,14 @@
 class Carro:
-    def __init__(self):
-        self.idDono
-        self.matricula
+    def __init__(self, id_estafeta, matricula):
+        self.tipo = "carro"
+        self.idDono = id_estafeta
+        self.matricula = matricula
         self.perdaVelocidade = 0.1
         self.velocMedia = 50
         self.limitePeso = 100
+
+    def getTipo(self):
+        return self.tipo
 
     def setIdDono(self, idDono):
         self.idDono = idDono
@@ -31,8 +35,8 @@ class Carro:
         return self.limite_peso
     
     def __str__(self):
-        return "Estafeta: " + str(self.getIdDono()) + "; " + "Matrícula: " + str(self.getMatricula()) + "; " + "Perda: " + str(self.getPerdaVelocidade()) + "; " + "Velocidade Média: " + str(self.getVelocMedia()) + "; " + "Limite de Peso: " + str(self.getLimite_peso())
-
+        return "Estafeta: " + self.idDono + "; " + "Tipo: " + self.tipo + "; " + "Matricula: " + self.matricula + "; " + "Perda: " + str(self.perdaVelocidade) + "; " + "Velocidade Media: " + str(self.velocMedia) + "; " + "Limite de Peso: " + str(self.limitePeso)
+    
     def __eq__(self, other):
         if(isinstance(other,Carro)):
             return self.getIdDono == other.getIdDono and self.getMatricula == other.getMatricula and self.getPerdaVelocidade == other.getPerdaVelocidade and self.getVelocMedia == other.getVelocMedia and self.getLimite_peso == other.getLimite_peso

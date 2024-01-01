@@ -1,7 +1,14 @@
 class Estafeta:
-    def __init__ (self, nome, entregas):
+    def __init__ (self, id, nome, veiculo):
+        self.id = id
         self.nome = nome
-        self.entregas = entregas 
+        self.veiculo = veiculo
+
+    def setId(self, id):
+        self.id = id
+
+    def getId (self):
+        return self.id
 
     def setNome(self, nome):
         self.nome = nome
@@ -9,15 +16,14 @@ class Estafeta:
     def getNome (self):
         return self.nome
     
-    def setEntregas(self, entregas):
-        self.entregas = entregas
+    def setVeiculo(self, veiculo):
+        self.veiculo = veiculo
 
-    def getEntregas(self):
-        return self.entregas
+    def getVeiculo (self):
+        return self.veiculo
     
     def __str__(self):
-        return "Nome: " + str(self.getNome())
-
+        return "Id: " + self.id + "Nome: " + self.nome + "Veiculo: " + str(self.veiculo)
 
 
 
