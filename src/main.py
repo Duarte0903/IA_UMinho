@@ -2,8 +2,6 @@ from Grafos.Graph import *
 from ui import *
 
 def menu_clientes(ui):
-    g = Graph()
-    ui = UI(g)
     ui.carregar_clientes()
     ui.carregar_encomendas_pendentes()
     ui.carregar_encomendas_entregues
@@ -54,12 +52,14 @@ def menu_algoritmos(g):
         elif saida == 3:
             inicio = input("Nodo inicial->")
             fim = input("Nodo final->")
+            g.add_heuristica_general(fim)
             print(g.gulosa(inicio, fim))
             l = input("Prima enter para continuar.")
         
         elif saida == 4:
             inicio = input("Nodo inicial->")
             fim = input("Nodo final->")
+            g.add_heuristica_general(fim)
             print(g.procura_aStar(inicio, fim))
             l = input("Prima enter para continuar.")
         
@@ -88,8 +88,6 @@ def menu_grafos(g):
             break
         
 def menu_estafetas(ui):
-    g = Graph()
-    ui = UI(g)
     ui.carregar_clientes()
     ui.carregar_encomendas_pendentes()
     ui.carregar_encomendas_entregues
@@ -114,8 +112,6 @@ def menu_estafetas(ui):
             break
         
 def menu_encomendas(ui):
-    g = Graph()
-    ui = UI(g)
     ui.carregar_clientes()
     ui.carregar_encomendas_pendentes()
     ui.carregar_encomendas_entregues
@@ -145,8 +141,6 @@ def menu_encomendas(ui):
             break
         
 def menu_entregas(ui):
-    g = Graph()
-    ui = UI(g)
     ui.carregar_clientes()
     ui.carregar_encomendas_pendentes()
     ui.carregar_encomendas_entregues
@@ -203,21 +197,6 @@ def main():
     g.add_edge("Chamoim e Vilar", "Carvalheira", 7.1)
     g.add_edge("Cibões e Brufe", "Campo do Gerês", 12.7)
     g.add_edge("Vilar da Veiga", "Campo do Gerês", 16.4) 
-
-    g.add_heuristica("Covide", "Health Planet")
-    g.add_heuristica("Souto", "Health Planet")
-    g.add_heuristica("Ribeira", "Health Planet")
-    g.add_heuristica("Balança", "Health Planet")
-    g.add_heuristica("Valdosende", "Health Planet")
-    g.add_heuristica("Rio Caldo", "Health Planet")
-    g.add_heuristica("Chorense e Monte", "Health Planet")
-    g.add_heuristica("Vilar da Veiga", "Health Planet")
-    g.add_heuristica("Cibões e Brufe", "Health Planet")
-    g.add_heuristica("Gondoriz", "Health Planet")    
-    g.add_heuristica("Carvalheira", "Health Planet")
-    g.add_heuristica("Chamoim e Vilar", "Health Planet")
-    g.add_heuristica("Campo do Gerês", "Health Planet")
-    g.add_heuristica("Health Planet", "Health Planet")
     
     ui = UI(g)
 

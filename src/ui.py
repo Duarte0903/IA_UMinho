@@ -117,7 +117,7 @@ class UI:
           
     def adicionar_encomenda_pendente(self, encomenda):
         id_encomenda = encomenda.getId()
-        id_cliente = encomenda.getClienteId()
+        id_cliente = encomenda.getIdCliente()
         peso = encomenda.getPeso()
         volume = encomenda.getVolume()
         prazoEntrega = encomenda.getPrazo()
@@ -146,7 +146,7 @@ class UI:
 
     def criar_encomenda_entregue(self, encomenda):
         id_encomenda = encomenda.getId()
-        id_cliente = encomenda.getClienteId()
+        id_cliente = encomenda.getIdCliente()
         peso = encomenda.getPeso()
         volume = encomenda.getVolume()
         prazoEntrega = encomenda.getPrazo()
@@ -303,22 +303,21 @@ class UI:
     ###Veiculos###
     
     def valida_tempo(self, start,encomenda):
-        g = Graph()
         end = self.procura_cliente(encomenda.getIdCliente()).getFreguesia()
 
-        dfs = g.procura_DFS(start, end, path=[], visited=set())
-        bfs = g.procura_BFS(start, end,)
-        g.add_heuristica(start,end)
-        AStar = g.procura_aStar(start, end)
-        gulosa = g.gulosa(start, end)
+        dfs = self.graph.procura_DFS(start, end, path=[], visited=set())
+        bfs = self.graph.procura_BFS(start, end,)
+        self.graph.add_heuristica_general(end)
+        AStar = self.graph.procura_aStar(start, end)
+        gulosa = self.graph.gulosa(start, end)
 
         custo = min(dfs, bfs, AStar, gulosa)
 
-        tipo_veiculo = self.escolherVeiculo(custo, encomenda.getPeso())
+        tipo_veiculo = self.escolherVeiculo(custo[1], encomenda.getPeso())
 
-        tempo = self.calculaTempoVeiculo(custo,encomenda.getPeso(), tipo_veiculo)
+        #tempo = self.calculaTempoVeiculo(custo,encomenda.getPeso(), tipo_veiculo)
 
-        return encomenda.getPrazo() >= tempo
+        return encomenda.getPrazo() >= tipo_veiculo[0]
 
     def calculaTempoVeiculo(self, custo, peso, tipo_veiculo):
         velocidades = {
@@ -392,6 +391,14 @@ class UI:
             precoEntrega = custoCarro + valordistancia + valorPrazo
             
         return precoEntrega
+    
+    def get_tipo_veiculos(self, peso):
+        if peso <= 5:
+            return "Bicicleta"
+        elif peso <= 20:
+            return "Mota"
+        elif peso <= 100:
+            return "Carro"
 
 
 

@@ -98,20 +98,20 @@ class Graph:
 
     def get_coord_by_name(self, name):
         coordenadas = {
-            "Health Planet": (41.719444, -8.298333),
-            "Balança": (41.7025, -8.311389),
-            "Covide": (41.738611, -8.213889 ),
-            "Souto": (41.693333, -8.343056),
-            "Ribeira": (41.696389, -8.330833),
-            "Valdosende": (41.667778, -8.233056),
-            "Rio Caldo": (41.677222, -8.197222),
-            "Chorense e Monte": (41.7, -8.271667),
-            "Vilar da Veiga": (41.745556, -8.169722),
-            "Chamoim e Vilar": (41.723611, -8.2625),
-            "Gondoriz": (41.735278, -8.301944),
-            "Carvalheira": (41.746389, -8.234444),
-            "Campo do Gerês": (41.759167, -8.195),
-            "Cibões e Brufe": (41.754167, -8.26)
+            "Health Planet": (41.71807978492159, -8.30917203803056),
+            "Balança": (41.704898431813334, -8.321451365436666),
+            "Covide": (41.73746645742784, -8.213419535956106),
+            "Souto": (41.69798855136702, -8.34528975491547),
+            "Ribeira": (41.697042171877975, -8.32928045699718),
+            "Valdosende": (41.65456719741683, -8.222147650257954),
+            "Rio Caldo": (41.6782800365772, -8.184467528752261),
+            "Chorense e Monte": (41.70991309207952, -8.304550695299849),
+            "Vilar da Veiga": (41.703049799112755, -8.16645961862092),
+            "Chamoim e Vilar": (41.734604350198396, -8.27073986996217),
+            "Gondoriz": (41.73414387416662, -8.302094615042998),
+            "Carvalheira": (41.746663597981545, -8.236168994389564),
+            "Campo do Gerês": (41.758671476196184, -8.199980773826091),
+            "Cibões e Brufe": (41.7438212353067, -8.280861241830227)
         }
         
         return coordenadas.get(name)
@@ -329,3 +329,10 @@ class Graph:
 
         print('Path does not exist!')
         return None
+    
+    def add_heuristica_general(self, n1):
+        lista_v = self.m_nodes
+        
+        for nodo in lista_v:
+            n = nodo.getName()
+            self.add_heuristica(n,n1)  
