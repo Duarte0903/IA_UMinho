@@ -85,13 +85,12 @@ class UI:
                 volume = float(input("Introduza o volume da encomenda: "))
 
                 if 0 < volume <= 100:
-                    prazoEntrega = int(input("Introduza o prazo de entrega da encomenda em dias: "))
-                    emHoras = prazoEntrega * 24
+                    prazoEntrega = int(input("Introduza o prazo de entrega da encomenda em horas: "))
 
-                    if emHoras > 0:
+                    if prazoEntrega > 0:
                         id_encomenda = str(self.definir_id_encomenda_pendente())
 
-                        encomenda = Encomenda(id_encomenda, id_cliente, peso, volume, emHoras, "Pendente")
+                        encomenda = Encomenda(id_encomenda, id_cliente, peso, volume, prazoEntrega, "Pendente")
 
                         if not self.valida_tempo("Health Planet",encomenda):
                             print("Prazo de entrega impossível de ser cumprido")
@@ -399,6 +398,8 @@ class UI:
             return "Mota"
         elif peso <= 100:
             return "Carro"
+        else:
+            return None
 
 
 
