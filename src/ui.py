@@ -141,6 +141,22 @@ class UI:
             
     ###Encomendas Entregues###
             
+    def reload_entregas(self):
+        ficheiro = open(self.entregas, 'w')
+        for entrega in self.m_encomendas_entregues:
+            id_entrega = entrega.getId()
+            id_cliente = entrega.getIdCliente()
+            id_estafeta = entrega.getIdEstafeta()
+            id_encomenda = entrega.getIdEncomenda()
+            avaliacao = entrega.getAvaliacao()
+            preco = entrega.getPreco()
+            matr = entrega.getMatrVeiculo()
+            caminho = entrega.getCaminho()
+            dist = entrega.getDistancia()
+            tempo = entrega.getTempoPrevisto()
+
+            ficheiro.write(f"{id_entrega};{id_cliente};{id_estafeta};{id_encomenda};{avaliacao};{preco};{matr};{caminho};{dist};{tempo}\n")
+
     def carregar_encomendas_entregues(self):
         ficheiro = open(self.entregas, 'r')
         for linha in ficheiro:
@@ -490,6 +506,21 @@ class UI:
             if estafeta.getId() == entrega.getIdEstafeta():
                 estafeta.setDisponivel(True)
 
+        self.reload_entregas()
+
+    def avaliacao_media(self):
+        soma = 0
+        counter = 0
+        id = int(input("ID de estafeta: "))
+        for entrega in self.m_encomendas_entregues:
+            if entrega.getAvaliacao() != "None":
+                if entrega.getIdEstafeta() == id:
+                    soma = soma + int(entrega.getAvaliacao())
+                    counter = counter + 1
+        if counter == 0:
+            print("O estafeta não tem entregas")
+            return
+        print(f'Avaliação média: {soma / counter}')
 
 
 

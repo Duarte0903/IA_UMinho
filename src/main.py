@@ -107,6 +107,7 @@ def menu_estafetas(ui):
         print("\nMENU ESTAFETAS")
         print("1-Criar estafeta")
         print("2-Ver estafetas")
+        print("3-Ver avaliação média")
         print("0-Sair")
 
         try:
@@ -117,6 +118,10 @@ def menu_estafetas(ui):
 
             elif saida == 2:
                 ui.ver_estafetas()
+                l = input("Prima Enter para continuar.")
+            
+            elif saida == 3:
+                ui.avaliacao_media()
                 l = input("Prima Enter para continuar.")
             
             elif saida == 0:
