@@ -2,165 +2,186 @@ from Grafos.Graph import *
 from ui import *
 
 def menu_clientes(ui):
-    ui.carregar_clientes()
-    ui.carregar_encomendas_pendentes()
-    ui.carregar_encomendas_entregues
-    ui.carregar_estafetas()
     saida = -1
     while saida != 0:
+        print("\nMENU CLIENTES")
         print("1-Adicionar Cliente")
         print("2-Ver clientes")
         print("3-Avaliar Entrega")
         print("0-Sair")
 
-        saida = int(input("Escolha uma opção -> "))
-        if saida == 1:
-            ui.adicionar_cliente()
-            l = input("Prima Enter para continuar.")
-        elif saida == 2:
-            ui.ver_clientes()
-            l = input("Prima Enter para continuar.")
-        elif saida == 3:
-            ui.ver_clientes()
-            l = input("Prima Enter para continuar.")
-        elif saida == 0:
-            print("Encerrado")
-            break
+        try:
+            saida = int(input("Escolha uma opção -> "))
+            if saida == 1:
+                ui.adicionar_cliente()
+                l = input("Prima Enter para continuar.")
+            elif saida == 2:
+                ui.ver_clientes()
+                l = input("Prima Enter para continuar.")
+            elif saida == 3:
+                #ui.avaliar_entrega() TODO
+                l = input("Prima Enter para continuar.")
+            elif saida == 0:
+                print("")
+                break
+            else:
+                print("Input Inválido\n")
+        except ValueError:
+            print("Insira um número inteiro válido.\n")
         
 def menu_algoritmos(g):
     saida = -1
     while saida != 0:
+        print("\nMENU ALGORITMOS")
         print("1-DFS")
         print("2-BFS")
         print("3-Gulosa")
         print("4-A*")
         print("0-Sair")
         
-        saida = int(input("Escolha uma opção -> "))
-        if saida == 1:
-            inicio = input("Nodo inicial->")
-            fim = input("Nodo final->")
-            print(g.procura_DFS(inicio, fim, path=[], visited=set()))
-            l = input("Prima enter para continuar.")
+        try:
+            saida = int(input("Escolha uma opção -> "))
+            if saida == 1:
+                inicio = input("Nodo inicial->")
+                fim = input("Nodo final->")
+                print(g.procura_DFS(inicio, fim, path=[], visited=set()))
+                l = input("Prima enter para continuar.")
         
-        elif saida == 2:
-            inicio = input("Nodo inicial->")
-            fim = input("Nodo final->")
-            print(g.procura_BFS(inicio, fim))
-            l = input("Prima enter para continuar.")
+            elif saida == 2:
+                inicio = input("Nodo inicial->")
+                fim = input("Nodo final->")
+                print(g.procura_BFS(inicio, fim))
+                l = input("Prima enter para continuar.")
             
-        elif saida == 3:
-            inicio = input("Nodo inicial->")
-            fim = input("Nodo final->")
-            g.add_heuristica_general(fim)
-            print(g.gulosa(inicio, fim))
-            l = input("Prima enter para continuar.")
+            elif saida == 3:
+                inicio = input("Nodo inicial->")
+                fim = input("Nodo final->")
+                g.add_heuristica_general(fim)
+                print(g.gulosa(inicio, fim))
+                l = input("Prima enter para continuar.")
         
-        elif saida == 4:
-            inicio = input("Nodo inicial->")
-            fim = input("Nodo final->")
-            g.add_heuristica_general(fim)
-            print(g.procura_aStar(inicio, fim))
-            l = input("Prima enter para continuar.")
+            elif saida == 4:
+                inicio = input("Nodo inicial->")
+                fim = input("Nodo final->")
+                g.add_heuristica_general(fim)
+                print(g.procura_aStar(inicio, fim))
+                l = input("Prima enter para continuar.")
         
-        elif saida == 0:
-            print("Encerrado")
-            break
+            elif saida == 0:
+                print("")
+                break
+            else:
+                print("Input Inválido\n")
+        except ValueError:
+            print("Insira um número inteiro válido.\n")
         
 def menu_grafos(g):
     saida = -1
     while saida != 0:
+        print("\nMENU GRAFOS")
         print("1-Imprimir Grafo")
         print("2-Desenhar Grafo")
         print("0-Sair")
 
-        saida = int(input("Introduza a sua opcao -> "))
-        if saida == 1:
-            print(g.m_graph)
-            l = input("Prima Enter para continuar.")
+        try:
+            saida = int(input("Introduza a sua opcao -> "))
+            if saida == 1:
+                print(g.m_graph)
+                l = input("Prima Enter para continuar.")
             
-        elif saida == 2:
-            n1 = input("Insira o nodo -> ")
-            g.desenha(n1)
-            l = input("Prima Enter para continuar.")
-        elif saida == 0:
-            print("Encerrado")
-            break
+            elif saida == 2:
+                n1 = input("Insira o nodo -> ")
+                g.desenha(n1)
+                l = input("Prima Enter para continuar.")
+            elif saida == 0:
+                print("")
+                break
+            else:
+                print("Input Inválido\n")
+        except ValueError:
+            print("Insira um número inteiro válido.\n")
         
 def menu_estafetas(ui):
-    ui.carregar_clientes()
-    ui.carregar_encomendas_pendentes()
-    ui.carregar_encomendas_entregues
-    ui.carregar_estafetas()
     saida = -1
     while saida != 0:
+        print("\nMENU ESTAFETAS")
         print("1-Criar estafeta")
         print("2-Ver estafetas")
         print("0-Sair")
 
-        saida = int(input("Introduza a sua opcao -> "))
-        if saida == 1:
-            ui.criar_estafeta()
-            l = input("Prima Enter para continuar.")
+        try:
+            saida = int(input("Introduza a sua opcao -> "))
+            if saida == 1:
+                ui.criar_estafeta()
+                l = input("Prima Enter para continuar.")
 
-        elif saida == 2:
-            ui.ver_estafetas()
-            l = input("Prima Enter para continuar.")
+            elif saida == 2:
+                ui.ver_estafetas()
+                l = input("Prima Enter para continuar.")
             
-        elif saida == 0:
-            print("Encerrado")
-            break
+            elif saida == 0:
+                print("")
+                break
+            else:
+                print("Input Inválido\n")
+        except ValueError:
+            print("Insira um número inteiro válido.\n")
         
 def menu_encomendas(ui):
-    ui.carregar_clientes()
-    ui.carregar_encomendas_pendentes()
-    ui.carregar_encomendas_entregues
-    ui.carregar_estafetas()
     saida = -1
     while saida != 0:
+        print("\nMENU ENCOMENDAS")
         print("1-Adicionar Encomenda")
         print("2-Ver encomendas pendentes")
         print("3-Ver encomendas entregues")
         print("0-Sair")
 
-        saida = int(input("Introduza a sua opcao -> "))
-        if saida == 1:
-            ui.criar_encomenda()
-            l = input("Prima Enter para continuar.")
+        try:
+            saida = int(input("Introduza a sua opcao -> "))
+            if saida == 1:
+                ui.criar_encomenda()
+                l = input("Prima Enter para continuar.")
 
-        elif saida == 2:
-            ui.ver_encomendas_pendentes()
-            l = input("Prima Enter para continuar.")
+            elif saida == 2:
+                ui.ver_encomendas_pendentes()
+                l = input("Prima Enter para continuar.")
         
-        elif saida == 3:
-            ui.ver_encomendas_entregues()
-            l = input("Prima Enter para continuar.")
+            elif saida == 3:
+                ui.ver_encomendas_entregues()
+                l = input("Prima Enter para continuar.")
             
-        elif saida == 0:
-            print("Encerrado")
-            break
+            elif saida == 0:
+                print("")
+                break
+            else:
+                print("Input Inválido\n")
+        except ValueError:
+            print("Insira um número inteiro válido.\n")
+                
         
 def menu_entregas(ui):
-    ui.carregar_clientes()
-    ui.carregar_encomendas_pendentes()
-    ui.carregar_encomendas_entregues
-    ui.carregar_estafetas()
     saida = -1
     while saida != 0:
+        print("\nMENU ENTREGAS")
         print("1-Efetuar Entrega")
         print("2-Ver entregas")
         print("0-Sair")
+        
+        try:
+            saida = int(input("Introduza a sua opcao -> "))
+            if saida == 1:
+                l = input("Prima Enter para continuar.")
 
-        saida = int(input("Introduza a sua opcao -> "))
-        if saida == 1:
-            l = input("Prima Enter para continuar.")
-
-        elif saida == 2:
-            l = input("Prima Enter para continuar.")
+            elif saida == 2:
+                l = input("Prima Enter para continuar.")
             
-        elif saida == 0:
-            print("Encerrado")
-            break
+            elif saida == 0:
+                print("")
+                break
+            else:
+                print("Input Inválido\n")
+        except ValueError:
+            print("Insira um número inteiro válido.\n")
 
 def main():
 
@@ -207,6 +228,7 @@ def main():
 
     saida = -1
     while saida != 0:
+        print("MENU INICIAL")
         print("1-Menu Clientes")
         print("2-Menu Algoritmos")
         print("3-Menu Grafos")
@@ -215,22 +237,27 @@ def main():
         print("6-Menu Entregas")
         print("0-Sair")
 
-        saida = int(input("Escolha uma opção -> "))
-        if saida == 1:
-            menu_clientes(ui)
-        elif saida == 2:
-            menu_algoritmos(g)
-        elif saida == 3:
-            menu_grafos(g)
-        elif saida == 4:
-            menu_estafetas(ui)
-        elif saida == 5:
-            menu_encomendas(ui)
-        elif saida == 5:
-            menu_entregas(ui)
-        elif saida == 0:
-            print("Encerrado")
-            break
+        try:
+            saida = int(input("Escolha uma opção -> "))
+            if saida == 1:
+                menu_clientes(ui)
+            elif saida == 2:
+                menu_algoritmos(g)
+            elif saida == 3:
+                menu_grafos(g)
+            elif saida == 4:
+                menu_estafetas(ui)
+            elif saida == 5:
+                menu_encomendas(ui)
+            elif saida == 6:
+                menu_entregas(ui)
+            elif saida == 0:
+                print("Encerrado")
+                break
+            else:
+                print("Input Inválido")
+        except ValueError:
+            print("Insira um número inteiro válido.")
 
 if __name__ == "__main__":
     main()

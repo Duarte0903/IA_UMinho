@@ -25,11 +25,11 @@ class UI:
 
     diretoria_atual = os.getcwd()
 
-    pastaEncomendas = os.path.join(diretoria_atual, 'Encomendas')
-    pastaClientes = os.path.join(diretoria_atual, 'Clientes')
-    pastaEntregas = os.path.join(diretoria_atual, 'Entregas')
-    pastaEstafetas = os.path.join(diretoria_atual, 'Estafetas')
-    pastaVeiculos = os.path.join(diretoria_atual, 'Veiculos')
+    pastaEncomendas = os.path.join(diretoria_atual, 'EncomendasData')
+    pastaClientes = os.path.join(diretoria_atual, 'ClientesData')
+    pastaEntregas = os.path.join(diretoria_atual, 'EntregasData')
+    pastaEstafetas = os.path.join(diretoria_atual, 'EstafetasData')
+    pastaVeiculos = os.path.join(diretoria_atual, 'VeiculosData')
 
         
     if not os.path.exists(pastaEncomendas):
@@ -257,7 +257,7 @@ class UI:
         characters = string.ascii_letters + string.digits  # All letters (uppercase and lowercase) and digits
         matricula = ''.join(random.choice(characters) for i in range(6))
 
-        tipo_veiculo = input("Introduza o tipo de veiculo do estafeta: ")
+        tipo_veiculo = input("Introduza o tipo de veiculo do estafeta: ").lower()
 
         if tipo_veiculo == "bicicleta":
             veiculo = Bicicleta(id_estafeta, matricula)
