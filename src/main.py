@@ -133,7 +133,6 @@ def menu_encomendas(ui):
         print("\nMENU ENCOMENDAS")
         print("1-Adicionar Encomenda")
         print("2-Ver encomendas pendentes")
-        print("3-Ver encomendas entregues")
         print("0-Sair")
 
         try:
@@ -144,10 +143,6 @@ def menu_encomendas(ui):
 
             elif saida == 2:
                 ui.ver_encomendas_pendentes()
-                l = input("Prima Enter para continuar.")
-        
-            elif saida == 3:
-                ui.ver_encomendas_entregues()
                 l = input("Prima Enter para continuar.")
             
             elif saida == 0:
@@ -170,9 +165,11 @@ def menu_entregas(ui):
         try:
             saida = int(input("Introduza a sua opcao -> "))
             if saida == 1:
+                ui.criar_entrega()
                 l = input("Prima Enter para continuar.")
 
             elif saida == 2:
+                ui.ver_encomendas_entregues()
                 l = input("Prima Enter para continuar.")
             
             elif saida == 0:
@@ -223,7 +220,7 @@ def main():
 
     ui.carregar_clientes()
     ui.carregar_encomendas_pendentes()
-    ui.carregar_encomendas_entregues
+    ui.carregar_encomendas_entregues()
     ui.carregar_estafetas()
 
     saida = -1

@@ -89,7 +89,7 @@ class Graph:
         
         if coord1 is not None and coord2 is not None:
             distancia_km = geodesic(coord1, coord2).kilometers
-            distancia_int = round(distancia_km)
+            distancia_int = round(distancia_km,3)
             self.m_h[node1] = distancia_int
             return distancia_int
         else:

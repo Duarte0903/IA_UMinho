@@ -24,7 +24,7 @@ class Cliente:
         return self.freguesia
 
     def __str__(self):
-        return "Id: " + self.id + "; " + "Nome: " + str(self.getNome()) + "; " + "Freguesia: " + str(self.getFreguesia())
+        return "Id: " + str(self.id) + "; " + "Nome: " + str(self.getNome()) + "; " + "Freguesia: " + str(self.getFreguesia())
 
     def __eq__(self, other):
         if(isinstance(other, Cliente)):

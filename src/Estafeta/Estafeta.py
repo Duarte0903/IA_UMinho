@@ -3,6 +3,7 @@ class Estafeta:
         self.id = id
         self.nome = nome
         self.veiculo = veiculo
+        self.disponivel = True
 
     def setId(self, id):
         self.id = id
@@ -22,8 +23,14 @@ class Estafeta:
     def getVeiculo (self):
         return self.veiculo
     
+    def setDisponivel(self, disponivel):
+        self.disponivel = disponivel
+    
+    def getDisponivel(self):
+        return self.disponivel
+    
     def __str__(self):
-        return "Id: " + self.id + "; "+ "Nome: " + self.nome + "; " +"Veiculo:" + str(self.veiculo)
+        return "Id: " + str(self.id) + "; "+ "Nome: " + self.nome + "; " +"Veiculo:" + str(self.veiculo) + "; " + "Disponibilidade: " + str(self.disponivel)
 
 
 

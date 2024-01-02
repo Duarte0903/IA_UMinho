@@ -47,7 +47,6 @@ class UI:
     if not os.path.exists(pastaVeiculos):
         os.makedirs(pastaVeiculos)
 
-    encomendas_entregues = os.path.join(pastaEncomendas, 'Encomendas_Entregues.txt')
     encomenda_pendentes = os.path.join(pastaEncomendas, 'Encomendas_Pendentes.txt')
     clientes = os.path.join(pastaClientes, 'Clientes.txt')
     entregas = os.path.join(pastaEntregas, 'Entregas.txt')
@@ -56,12 +55,23 @@ class UI:
 
     file = open(clientes, 'a+')
     file1 = open(estafetas, 'a+')
-    file2 = open(encomendas_entregues, 'a+')
     file3 = open(encomenda_pendentes, 'a+')
     file4 = open(veiculos, 'a+')
     file5 = open(entregas, 'a+')
 
     ###Encomendas Pendentes###
+
+    def reload_encomendas_pendentes(self):
+        ficheiro = open(self.encomenda_pendentes, "w")
+        for encomenda in self.m_encomendas_pendentes:
+            id_encomenda = encomenda.getId()
+            id_cliente = encomenda.getIdCliente()
+            peso = encomenda.getPeso()
+            volume = encomenda.getVolume()
+            prazoEntrega = encomenda.getPrazo()
+            estado = "Pendente"
+    
+            ficheiro.write(str(id_encomenda) + ";" +str(id_cliente) + ";" + str(peso) + ";" + str(volume) + ";" + str(prazoEntrega) + ";" + estado + '\n')
 
     def carregar_encomendas_pendentes(self):
         ficheiro = open(self.encomenda_pendentes, 'r')
@@ -70,13 +80,13 @@ class UI:
                 data = linha.strip().split(';')
                 if len(data) == 6:
                     id_encomenda, id_cliente, peso, volume, prazoEntrega, estado = data
-                    encomenda = Encomenda(id_encomenda, id_cliente, peso, volume, prazoEntrega, estado)
+                    encomenda = Encomenda(int(id_encomenda), int(id_cliente), float(peso), float(volume), int(prazoEntrega), estado)
                     self.m_encomendas_pendentes.append(encomenda)
                 else:
                     print(f"Ignoring line due to incorrect format: {linha}")
         
     def criar_encomenda(self):
-        id_cliente = input("Introduza o id do cliente: ")
+        id_cliente = int(input("Introduza o id do cliente: "))
 
         while True:
             peso = float(input("Introduza o peso da encomenda: "))
@@ -88,7 +98,7 @@ class UI:
                     prazoEntrega = int(input("Introduza o prazo de entrega da encomenda em horas: "))
 
                     if prazoEntrega > 0:
-                        id_encomenda = str(self.definir_id_encomenda_pendente())
+                        id_encomenda = int(self.definir_id_encomenda_pendente())
 
                         encomenda = Encomenda(id_encomenda, id_cliente, peso, volume, prazoEntrega, "Pendente")
 
@@ -127,35 +137,44 @@ class UI:
 
             ficheiro = open(self.encomenda_pendentes, 'a+')
 
-            ficheiro.write(id_encomenda + ";" +id_cliente + ";" + str(peso) + ";" + str(volume) + ";" + str(prazoEntrega) + ";" + estado + '\n')
+            ficheiro.write(str(id_encomenda) + ";" +str(id_cliente) + ";" + str(peso) + ";" + str(volume) + ";" + str(prazoEntrega) + ";" + estado + '\n')
             
     ###Encomendas Entregues###
             
     def carregar_encomendas_entregues(self):
-        ficheiro = open(self.encomendas_entregues, 'r')
+        ficheiro = open(self.entregas, 'r')
         for linha in ficheiro:
             if linha.strip():
                 data = linha.strip().split(';')
-                if len(data) == 6:
-                    id_encomenda, id_cliente, peso, volume, prazoEntrega, estado = data
-                    encomenda = Encomenda(id_encomenda, id_cliente, peso, volume, prazoEntrega, estado)
+                if len(data) == 10:
+                    id_entrega, id_cliente, id_estafeta, id_encomenda, avaliacao, preco, matricula, caminho, distancia, tempo = data
+                    encomenda = Entrega(int(id_entrega), int(id_cliente), int(id_estafeta), int(id_encomenda), avaliacao, float(preco), matricula, caminho, float(distancia), float(tempo))
                     self.m_encomendas_entregues.append(encomenda)
                 else:
                     print(f"Ignoring line due to incorrect format: {linha}")
 
-    def criar_encomenda_entregue(self, encomenda):
-        id_encomenda = encomenda.getId()
-        id_cliente = encomenda.getIdCliente()
-        peso = encomenda.getPeso()
-        volume = encomenda.getVolume()
-        prazoEntrega = encomenda.getPrazo()
-        estado = "Entregue"
+    def criar_encomenda_entregue(self, entrega):
+        id_entrega = entrega.getId()
+        id_cliente = entrega.getIdCliente()
+        id_estafeta = entrega.getIdEstafeta()
+        id_encomenda = entrega.getIdEncomenda()
+        avaliacao = entrega.getAvaliacao()
+        preco = entrega.getPreco()
+        matr = entrega.getMatrVeiculo()
+        caminho = entrega.getCaminho()
+        dist = entrega.getDistancia()
+        tempo = entrega.getTempoPrevisto()
+
+        list_estafetas = list(self.m_Estafetas.keys())
+        for estafeta in list_estafetas:
+            if estafeta.getId() == id_estafeta:
+                estafeta.setDisponivel(False)
 
         if id_encomenda not in self.m_encomendas_entregues:
-            self.m_encomendas_entregues.append(encomenda)
+            self.m_encomendas_entregues.append(entrega)
 
-            ficheiro = open(self.encomendas_entregues, 'a+')
-            ficheiro.write(id_encomenda + ";" +id_cliente + ";" + str(peso) + ";" + str(volume) + ";" + str(prazoEntrega) + ";" + estado + '\n')
+            ficheiro = open(self.entregas, 'a+')
+            ficheiro.write(f"{id_entrega};{id_cliente};{id_estafeta};{id_encomenda};{avaliacao};{preco};{matr};{caminho};{dist};{tempo}\n")
 
     def ver_encomendas_entregues(self):
         for encomenda in self.m_encomendas_entregues:
@@ -174,7 +193,7 @@ class UI:
                         data = linha.strip().split(';')
                         if len(data) == 3:
                             id_cliente, nome, freguesia = data
-                            cliente = Cliente(id_cliente, nome, freguesia)
+                            cliente = Cliente(int(id_cliente), nome, freguesia)
                             self.m_Clientes.append(cliente)
                         else:
                             print(f"Ignoring line due to incorrect format: {linha}")
@@ -231,15 +250,15 @@ class UI:
                             id_estafeta, nome, id_estafeta2, tipo, matricula, perda, velocidade, peso = data
 
                             if tipo == "bicicleta":
-                                veiculo = Bicicleta(id_estafeta, matricula)
+                                veiculo = Bicicleta(int(id_estafeta), matricula)
 
                             elif tipo == "mota":
-                                veiculo = Mota(id_estafeta, matricula)
+                                veiculo = Mota(int(id_estafeta), matricula)
 
                             elif tipo == "carro":
-                                veiculo = Carro(id_estafeta, matricula)
+                                veiculo = Carro(int(id_estafeta), matricula)
 
-                            estafeta = Estafeta(id_estafeta, nome, veiculo)
+                            estafeta = Estafeta(int(id_estafeta), nome, veiculo)
 
                             self.m_Estafetas[estafeta] = []
                         else:
@@ -344,13 +363,13 @@ class UI:
             indice = indice + 1
             tempo = self.calculaTempoVeiculo(custo, peso, key_list[indice], prazo)
 
-        return tempo
+        return (tempo, key_list[indice])
 
     def escolherVeiculo(self, custo, peso, prazo):
         tipo_veiculo = self.get_tipo_veiculos(peso)
 
         if tipo_veiculo:
-            tempo = self.calculaTempoVeiculo(custo, peso, tipo_veiculo, prazo)
+            (tempo, tipo) = self.calculaTempoVeiculo(custo, peso, tipo_veiculo, prazo)
 
             return tempo
         else:
@@ -366,14 +385,14 @@ class UI:
             valorPrazo = 5
         elif (float(prazo) >= 7):
             valorPrazo = 7
-        elif (float(prazo) < 1):
+        elif (float(prazo) >= 1):
             valorPrazo = 10
             
         if (float(distancia) >= 10):
             valordistancia = 8
         elif (float(distancia) >= 5):
             valordistancia = 4
-        elif (float(distancia) < 1):
+        elif (float(distancia) > 1):
             valordistancia = 0
             
         custoBicicleta = 2
@@ -384,10 +403,16 @@ class UI:
             precoEntrega = custoBicicleta + valordistancia + valorPrazo
         elif (veiculo == "mota"):
             precoEntrega = custoMota + valordistancia + valorPrazo
-        elif (veiculo == "bicicleta"):
+        elif (veiculo == "carro"):
             precoEntrega = custoCarro + valordistancia + valorPrazo
             
         return precoEntrega
+    
+    def procura_encomenda(self, id_encomenda):
+        for encomenda in self.m_encomendas_pendentes:
+            if encomenda.getId() == id_encomenda:
+                return encomenda
+        return None
     
     def get_tipo_veiculos(self, peso):
         if peso <= 5:
@@ -398,6 +423,45 @@ class UI:
             return "carro"
         else:
             return None
+        
+    def estafeta_disponivel(self, tipo):
+        estafetas_list = list(self.m_Estafetas.keys())
+        for estafeta in estafetas_list:
+            if estafeta.getVeiculo().getTipo() == tipo:
+                if estafeta.getDisponivel():
+                    return estafeta
+        return None
+
+    def criar_entrega(self):
+        id = int(input("Introduza o ID da encomenda a entregar: "))
+        encomenda = self.procura_encomenda(id)
+        if not encomenda:
+            print("Encomenda não existe")
+            return
+        
+        custo = self.graph.procura_aStar("Health Planet", self.procura_cliente(encomenda.getIdCliente()).getFreguesia())
+        
+        id_entrega = len(self.m_encomendas_entregues)
+        id_cliente = encomenda.getIdCliente()
+        (tempo, tipo) = self.calculaTempoVeiculo(custo[1], encomenda.getPeso(), self.get_tipo_veiculos(encomenda.getPeso()), encomenda.getPrazo())
+        estafeta = self.estafeta_disponivel(tipo)
+        if estafeta == None:
+            print("Não existe nenhum estafeta disponível")
+            return
+        id_encomenda = id
+        avaliacao = None
+        preco = self.precoEntrega(estafeta.getVeiculo().getTipo(), encomenda.getPrazo(), custo[1])
+        matr = estafeta.getVeiculo().getMatricula()
+        caminho = custo[0]
+        dist = custo[1]
+
+        entrega = Entrega(id_entrega, id_cliente, estafeta.getId(), id_encomenda, avaliacao, preco, matr, caminho, dist, tempo)
+
+        self.criar_encomenda_entregue(entrega)
+
+        self.m_encomendas_pendentes.remove(encomenda)
+
+        self.reload_encomendas_pendentes()
 
 
 
