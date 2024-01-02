@@ -310,15 +310,15 @@ class UI:
         AStar = self.graph.procura_aStar(start, end)
         gulosa = self.graph.gulosa(start, end)
 
-        custo = min(dfs, bfs, AStar, gulosa)
+        custo = min(dfs[1], bfs[1], AStar[1], gulosa[1])
 
-        tipo_veiculo = self.escolherVeiculo(custo[1], encomenda.getPeso())
+        tempo = self.escolherVeiculo(custo, encomenda.getPeso(), encomenda.getPrazo())
 
         #tempo = self.calculaTempoVeiculo(custo,encomenda.getPeso(), tipo_veiculo)
 
-        return encomenda.getPrazo() >= tipo_veiculo[0]
+        return encomenda.getPrazo() >= tempo
 
-    def calculaTempoVeiculo(self, custo, peso, tipo_veiculo):
+    def calculaTempoVeiculo(self, custo, peso, tipo_veiculo, prazo):
         velocidades = {
             "bicicleta": {"vel_max": 10, "decresc": 0.6},
             "mota": {"vel_max": 35, "decresc": 0.5},
@@ -328,6 +328,8 @@ class UI:
         if tipo_veiculo not in velocidades:
             return None  # Tipo de veículo não reconhecido
 
+        key_list = list(velocidades.keys())
+        indice = key_list.index(tipo_veiculo)
         vel_max = velocidades[tipo_veiculo]["vel_max"]
         decresc = velocidades[tipo_veiculo]["decresc"]
 
@@ -337,24 +339,20 @@ class UI:
             return None  # Peso excede capacidade do veículo
 
         tempo = custo / vel_atual
+
+        if tempo >= prazo:
+            indice = indice + 1
+            tempo = self.calculaTempoVeiculo(custo, peso, key_list[indice], prazo)
+
         return tempo
 
-    def escolherVeiculo(self, custo, peso):
+    def escolherVeiculo(self, custo, peso, prazo):
         tipo_veiculo = self.get_tipo_veiculos(peso)
 
         if tipo_veiculo:
-            tempo_bicicleta = self.calculaTempoVeiculo(custo, peso, "bicicleta")
-            tempo_mota = self.calculaTempoVeiculo(custo, peso, "mota")
-            tempo_carro = self.calculaTempoVeiculo(custo, peso, "carro")
+            tempo = self.calculaTempoVeiculo(custo, peso, tipo_veiculo, prazo)
 
-            tempos = {
-                "bicicleta": tempo_bicicleta,
-                "mota": tempo_mota,
-                "carro": tempo_carro
-            }
-
-            veiculo_rapido = min((tempo, veiculo) for veiculo, tempo in tempos.items() if tempo is not None)
-            return veiculo_rapido
+            return tempo
         else:
             return None  # Peso excede capacidade de todos os veículos
         
@@ -393,11 +391,11 @@ class UI:
     
     def get_tipo_veiculos(self, peso):
         if peso <= 5:
-            return "Bicicleta"
+            return "bicicleta"
         elif peso <= 20:
-            return "Mota"
+            return "mota"
         elif peso <= 100:
-            return "Carro"
+            return "carro"
         else:
             return None
 
