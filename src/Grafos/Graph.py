@@ -150,6 +150,13 @@ class Graph:
 # - desenha: Desenha graficamente o grafo
 
     def desenha(self,n1):
+        for node in self.m_nodes:
+                test = node.getName()
+                if test == n1:
+                    break
+                else: test = "None"
+            
+        if test == "None": return print("Freguesia não existente")
         lista_v = self.m_nodes
         lista_a = []
         g = nx.Graph()

@@ -87,6 +87,13 @@ class UI:
         
     def criar_encomenda(self):
         id_cliente = int(input("Introduza o id do cliente: "))
+        i=0
+        for cliente in self.m_Clientes:
+            teste1 = cliente.getId()
+            if teste1 == id_cliente: 
+                i=1
+                break
+        if i == 0: return print ("Esse cliente não existe!")
 
         while True:
             peso = float(input("Introduza o peso da encomenda: "))
@@ -121,6 +128,7 @@ class UI:
         return len(self.m_encomendas_pendentes)
 
     def ver_encomendas_pendentes(self):
+        if len(self.m_encomendas_pendentes) == 0: return print ("Não existem encomendas pendentes!")
         for encomenda in self.m_encomendas_pendentes:
             print(encomenda)
           
@@ -222,6 +230,16 @@ class UI:
         while True:
             nome = input("Introduza o nome do cliente: ")
             freguesia = input("Introduza a freguesia do cliente: ")
+            
+            for node in self.graph.getNodes():
+                teste = node.getName()
+                if teste == freguesia:
+                    break;
+                else: teste = "None"
+            
+            if teste == "None": return print("Freguesia não existente!")
+            
+
             id_cliente = str(self.definir_id_cliente())
 
             if self.procura_cliente(id_cliente) == None:
@@ -245,6 +263,7 @@ class UI:
         return len(self.m_Clientes)
 
     def ver_clientes(self):
+        if len(self.m_Clientes) == 0: print("Não existem clientes!")
         for cliente in self.m_Clientes:
             print(cliente)
 
@@ -302,6 +321,8 @@ class UI:
 
         elif tipo_veiculo == "carro":
             veiculo = Carro(id_estafeta, matricula)
+            
+        else: return print("Veículo inválido!")
 
         if veiculo is not None:
             if self.procura_estafeta(id_estafeta) is None:
@@ -478,14 +499,19 @@ class UI:
         self.m_encomendas_pendentes.remove(encomenda)
 
         self.reload_encomendas_pendentes()
+        
+        print("Entrega efetuada com sucesso!")
 
     ###AVALIACOES###
         
     def avaliar_entrega(self):
-        id_cliente = int(input("Qual o seu ID de cliente? "))
+        id_cliente = int(input("Qual o seu ID de cliente? "))              
+        i=0
         for entrega in self.m_encomendas_entregues:
             if entrega.getIdCliente() == id_cliente:
                 print(entrega)
+                i = i + 1
+        if i == 0: return print("Este cliente não existe ou não tem entregas!")
         id = int(input("Que entrega deseja avaliar? "))
         entrega_pedida = None
         for entrega in self.m_encomendas_entregues:
