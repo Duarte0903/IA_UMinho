@@ -76,15 +76,11 @@ class Graph:
 # - getNeighbours é responsável por retornar uma lista de vizinhos de um determinado nó dentro do grafo
     
     def getNeighbours(self, nodo):
-        lista = []  # Inicializa uma lista vazia para armazenar os vizinhos do nó
+        lista = []  
         
-        # Itera sobre os vizinhos (adjacentes) e seus pesos no grafo associado ao nó fornecido
         for (adjacente, peso) in self.m_graph[nodo]:
-        
-            # Adiciona o vizinho atual à lista de vizinhos com seu respectivo peso
             lista.append((adjacente, peso))  
         
-        # Retorna a lista de vizinhos do nó fornecido
         return lista 
     
     def add_heuristica(self, node1, node2):
@@ -95,6 +91,7 @@ class Graph:
             distancia_km = geodesic(coord1, coord2).kilometers
             distancia_int = round(distancia_km)
             self.m_h[node1] = distancia_int
+            return distancia_int
         else:
             print("Coordenadas não encontradas para calcular a heurística.")
 
@@ -152,14 +149,14 @@ class Graph:
 
 # - desenha: Desenha graficamente o grafo
 
-    def desenha(self):
+    def desenha(self,n1):
         lista_v = self.m_nodes
         lista_a = []
         g = nx.Graph()
         
         for nodo in lista_v:
             n = nodo.getName()
-            heuristica = self.getH(n)  
+            heuristica = self.add_heuristica(n,n1)  
             g.add_node(n, heuristic=heuristica, label=n) 
             
             for (adjacente, peso) in self.m_graph[n]:

@@ -35,7 +35,7 @@ class Bicicleta:
         return self.limite_peso
     
     def __str__(self):
-        return self.idDono + ";" + self.tipo + ";" + self.matricula + ";" + str(self.perdaVelocidade) + ";" + str(self.velocMedia) + ";" + str(self.limitePeso)
+        return self.idDono + ";" + self.tipo + "; " +self.matricula + "; " + str(self.perdaVelocidade) + "; "+ str(self.velocMedia) + "; " +  str(self.limitePeso)
 
     def __eq__(self, other):
         if(isinstance(other,Bicicleta)):

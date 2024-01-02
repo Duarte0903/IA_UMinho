@@ -1,6 +1,173 @@
 from Grafos.Graph import *
 from ui import *
 
+def menu_clientes(ui):
+    g = Graph()
+    ui = UI(g)
+    ui.carregar_clientes()
+    ui.carregar_encomendas_pendentes()
+    ui.carregar_encomendas_entregues
+    ui.carregar_estafetas()
+    saida = -1
+    while saida != 0:
+        print("1-Adicionar Cliente")
+        print("2-Ver clientes")
+        print("3-Avaliar Entrega")
+        print("0-Sair")
+
+        saida = int(input("Escolha uma opção -> "))
+        if saida == 1:
+            ui.adicionar_cliente()
+            l = input("Prima Enter para continuar.")
+        elif saida == 2:
+            ui.ver_clientes()
+            l = input("Prima Enter para continuar.")
+        elif saida == 3:
+            ui.ver_clientes()
+            l = input("Prima Enter para continuar.")
+        elif saida == 0:
+            print("Encerrado")
+            break
+        
+def menu_algoritmos(g):
+    saida = -1
+    while saida != 0:
+        print("1-DFS")
+        print("2-BFS")
+        print("3-Gulosa")
+        print("4-A*")
+        print("0-Sair")
+        
+        saida = int(input("Escolha uma opção -> "))
+        if saida == 1:
+            inicio = input("Nodo inicial->")
+            fim = input("Nodo final->")
+            print(g.procura_DFS(inicio, fim, path=[], visited=set()))
+            l = input("Prima enter para continuar.")
+        
+        elif saida == 2:
+            inicio = input("Nodo inicial->")
+            fim = input("Nodo final->")
+            print(g.procura_BFS(inicio, fim))
+            l = input("Prima enter para continuar.")
+            
+        elif saida == 3:
+            inicio = input("Nodo inicial->")
+            fim = input("Nodo final->")
+            print(g.gulosa(inicio, fim))
+            l = input("Prima enter para continuar.")
+        
+        elif saida == 4:
+            inicio = input("Nodo inicial->")
+            fim = input("Nodo final->")
+            print(g.procura_aStar(inicio, fim))
+            l = input("Prima enter para continuar.")
+        
+        elif saida == 0:
+            print("Encerrado")
+            break
+        
+def menu_grafos(g):
+    saida = -1
+    while saida != 0:
+        print("1-Imprimir Grafo")
+        print("2-Desenhar Grafo")
+        print("0-Sair")
+
+        saida = int(input("Introduza a sua opcao -> "))
+        if saida == 1:
+            print(g.m_graph)
+            l = input("Prima Enter para continuar.")
+            
+        elif saida == 2:
+            n1 = input("Insira o nodo -> ")
+            g.desenha(n1)
+            l = input("Prima Enter para continuar.")
+        elif saida == 0:
+            print("Encerrado")
+            break
+        
+def menu_estafetas(ui):
+    g = Graph()
+    ui = UI(g)
+    ui.carregar_clientes()
+    ui.carregar_encomendas_pendentes()
+    ui.carregar_encomendas_entregues
+    ui.carregar_estafetas()
+    saida = -1
+    while saida != 0:
+        print("1-Criar estafeta")
+        print("2-Ver estafetas")
+        print("0-Sair")
+
+        saida = int(input("Introduza a sua opcao -> "))
+        if saida == 1:
+            ui.criar_estafeta()
+            l = input("Prima Enter para continuar.")
+
+        elif saida == 2:
+            ui.ver_estafetas()
+            l = input("Prima Enter para continuar.")
+            
+        elif saida == 0:
+            print("Encerrado")
+            break
+        
+def menu_encomendas(ui):
+    g = Graph()
+    ui = UI(g)
+    ui.carregar_clientes()
+    ui.carregar_encomendas_pendentes()
+    ui.carregar_encomendas_entregues
+    ui.carregar_estafetas()
+    saida = -1
+    while saida != 0:
+        print("1-Adicionar Encomenda")
+        print("2-Ver encomendas pendentes")
+        print("3-Ver encomendas entregues")
+        print("0-Sair")
+
+        saida = int(input("Introduza a sua opcao -> "))
+        if saida == 1:
+            ui.criar_encomenda()
+            l = input("Prima Enter para continuar.")
+
+        elif saida == 2:
+            ui.ver_encomendas_pendentes()
+            l = input("Prima Enter para continuar.")
+        
+        elif saida == 3:
+            ui.ver_encomendas_entregues()
+            l = input("Prima Enter para continuar.")
+            
+        elif saida == 0:
+            print("Encerrado")
+            break
+        
+def menu_entregas(ui):
+    g = Graph()
+    ui = UI(g)
+    ui.carregar_clientes()
+    ui.carregar_encomendas_pendentes()
+    ui.carregar_encomendas_entregues
+    ui.carregar_estafetas()
+    saida = -1
+    while saida != 0:
+        print("1-Efetuar Entrega")
+        print("2-Ver entregas")
+        print("0-Sair")
+
+        saida = int(input("Introduza a sua opcao -> "))
+        if saida == 1:
+            l = input("Prima Enter para continuar.")
+
+        elif saida == 2:
+            l = input("Prima Enter para continuar.")
+            
+        elif saida == 0:
+            print("Encerrado")
+            break
+
 def main():
 
     g = Graph()
@@ -56,100 +223,35 @@ def main():
 
     ui.carregar_clientes()
     ui.carregar_encomendas_pendentes()
+    ui.carregar_encomendas_entregues
     ui.carregar_estafetas()
 
     saida = -1
     while saida != 0:
-        print("1-Imprimir Grafo")
-        print("2-Desenhar Grafo")
-        print("3-DFS")
-        print("4-BFS")
-        print("5-Gulosa")
-        print("6-A*")
-        print("7-Adicionar Cliente")
-        print("8-Ver clientes")
-        print("9-Adicionar Encomenda")
-        print("10-Ver encomendas pendentes")
-        print("11-Criar estafeta")
-        print("12-Ver estafetas")
+        print("1-Menu Clientes")
+        print("2-Menu Algoritmos")
+        print("3-Menu Grafos")
+        print("4-Menu Estafetas")
+        print("5-Menu Encomendas")
+        print("6-Menu Entregas")
         print("0-Sair")
 
-        saida = int(input("Introduza a sua opcao -> "))
+        saida = int(input("Escolha uma opção -> "))
         if saida == 1:
-            print(g.m_graph)
-            l = input("Prima Enter para continuar.")
-            
+            menu_clientes(ui)
         elif saida == 2:
-            g.desenha()
-            l = input("Prima Enter para continuar.")
-        
+            menu_algoritmos(g)
         elif saida == 3:
-            inicio = input("Nodo inicial->")
-            fim = input("Nodo final->")
-            print(g.procura_DFS(inicio, fim, path=[], visited=set()))
-            l = input("Prima enter para continuar.")
-        
+            menu_grafos(g)
         elif saida == 4:
-            inicio = input("Nodo inicial->")
-            fim = input("Nodo final->")
-            print(g.procura_BFS(inicio, fim))
-            l = input("Prima enter para continuar.")
-            
+            menu_estafetas(ui)
         elif saida == 5:
-            inicio = input("Nodo inicial->")
-            fim = input("Nodo final->")
-            print(g.gulosa(inicio, fim))
-            l = input("Prima enter para continuar.")
-        
-        elif saida == 6:
-            inicio = input("Nodo inicial->")
-            fim = input("Nodo final->")
-            print(g.procura_aStar(inicio, fim))
-            l = input("Prima enter para continuar.")
-
-        elif saida == 7:
-            ui.adicionar_cliente()
-            l = input("Prima Enter para continuar.")
-
-        elif saida == 8:
-            ui.ver_clientes()
-            l = input("Prima Enter para continuar.")
-
-        elif saida == 9:
-            ui.criar_encomenda()
-            l = input("Prima Enter para continuar.")
-
-        elif saida == 10:
-            ui.ver_encomendas_pendentes()
-            l = input("Prima Enter para continuar.")
-
-        elif saida == 11:
-            ui.criar_estafeta()
-            l = input("Prima Enter para continuar.")
-
-        elif saida == 12:
-            ui.ver_estafetas()
-            l = input("Prima Enter para continuar.")
-            
-        #print("1 - Ver Clientes registados no Sistema")
-        #print("2 - Ver Estafetas registados no Sistema")
-        #print("3 - Ver Veiculos registados no Sistema")
-        #print("4 - Adicionar Estafeta")
-        #print("5 - Adicionar Veículo")
-        #print("6 - Ver Encomendas do Sistema")
-        #print("7 - Ver Entregas Concluídas do Sistema")
-        #print("8 - Lançar Entregas Pendentes")
-        #print("9 - Ranking dos Estafetas Classificação")
-        #print("10 - Ranking dos Estafetas Ecológicos")
-        
-        #print("1 - Criar Encomenda")
-        #print("2 - Lista de Encomendas")
-       # print("3 - Lista de Entregas")
-        
+            menu_encomendas(ui)
+        elif saida == 5:
+            menu_entregas(ui)
         elif saida == 0:
             print("Encerrado")
             break
 
 if __name__ == "__main__":
     main()
-

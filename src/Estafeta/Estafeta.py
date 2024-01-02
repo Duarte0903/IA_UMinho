@@ -23,7 +23,7 @@ class Estafeta:
         return self.veiculo
     
     def __str__(self):
-        return "Id: " + self.id + "Nome: " + self.nome + "Veiculo: " + str(self.veiculo)
+        return "Id: " + self.id + "; "+ "Nome: " + self.nome + "; " +"Veiculo:" + str(self.veiculo)
 
 
 

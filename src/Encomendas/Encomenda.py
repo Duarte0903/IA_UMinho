@@ -1,6 +1,5 @@
 class Encomenda:
 
-
     def __init__(self, id_encomenda, id_cliente , peso, volume, prazoEntrega, estado):
         self.id_encomenda = id_encomenda        
         self.id_cliente = id_cliente
@@ -15,17 +14,11 @@ class Encomenda:
     def getId(self):
         return self.id_encomenda
     
-    def getClienteId(self):
+    def getIdCliente(self):
         return self.id_cliente
     
-    def setClienteId(self, id_cliente):
+    def setIdCliente(self, id_cliente):
         self.id_cliente = id_cliente
-    
-    def setEncomenda(self, encomenda):
-        self.encomenda = encomenda
-
-    def getEncomenda(self):
-        return self.encomenda
 
     def setPeso(self, peso):
         self.peso = peso
@@ -39,8 +32,8 @@ class Encomenda:
     def getVolume(self):
         return self.volume
 
-    def setPrazo(self, prazo):
-        self.prazoEntrega = prazo
+    def setPrazo(self, prazoEntrega):
+        self.prazoEntrega = prazoEntrega
 
     def getPrazo(self):
         return self.prazoEntrega
@@ -52,11 +45,11 @@ class Encomenda:
         return self.estado
 
     def __str__(self):
-        return "Id: " + str(self.getId()) + "; " + "Cliente: " + str(self.getClienteId()) + "; " + "Peso: " + str(self.getPeso()) + "; " + "Volume: " + str(self.getVolume()) + "; " + "Prazo: " + str(self.getPrazo()) + "; " + "Estado: " + str(self.getEstado())
+        return "Id: " + str(self.getId()) + "; " + "Cliente: " + str(self.getIdCliente()) + "; " + "Peso: " + str(self.getPeso()) + "; " + "Volume: " + str(self.getVolume()) + "; " + "Prazo: " + str(self.getPrazo()) + "; " + "Estado: " + str(self.getEstado())
 
     def __eq__(self, other):
         if(isinstance(other,Encomenda)):
-            return self.getCliente == other.getCliente and self.getEncomenda == other.getEncomenda and self.getPeso == other.getPeso and self.getVolume == other.getVolume and self.getPrazo == other.getPrazo and self.getEstado == other.getEstado
+            return self.getId == other.getId and self.getIdCliente == other.getIdCliente and self.getPeso == other.getPeso and self.getVolume == other.getVolume and self.getPrazo == other.getPrazo and self.getEstado == other.getEstado
         return False
 
 

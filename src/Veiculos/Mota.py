@@ -35,8 +35,8 @@ class Mota:
         return self.limite_peso
     
     def __str__(self):
-        return self.idDono + ";" + self.tipo + ";" + self.matricula + ";" + str(self.perdaVelocidade) + ";" + str(self.velocMedia) + ";" + str(self.limitePeso)
-
+        return self.idDono + ";" + self.tipo + "; " +self.matricula + "; " + str(self.perdaVelocidade) + "; "+ str(self.velocMedia) + "; " +  str(self.limitePeso)
+    
     def __eq__(self, other):
         if(isinstance(other,Mota)):
             return self.getIdDono == other.getIdDono and self.getMatricula == other.getMatricula and self.getPerdaVelocidade == other.getPerdaVelocidade and self.getVelocMedia == other.getVelocMedia and self.getLimite_peso == other.getLimite_peso

@@ -1,3 +1,4 @@
+from Entregas.Entregas import Entrega
 from Grafos.Graph import *
 from Cliente.Cliente import Cliente
 from Encomendas.Encomenda import Encomenda
@@ -14,61 +15,56 @@ class UI:
 
     def __init__ (self, graph):
         self.graph = graph
-        self.m_Encomendas = {}                  #dicionaio que associa um cliente a uma lista encomendas
-        self.m_Clientes = []                    #lista de clientes
-        self.m_Estafetas = {}                   #dicionario que associa um estafeta a uma lista de encomendas
-        self.m_encomendas_pendentes = []        #lista de encomendas pendentes
+        self.m_Encomendas = {}  
+        self.m_Estafetas = {}           
+        self.m_Clientes = []                   
+        self.m_encomendas_pendentes = []       
+        self.m_encomendas_entregues = []    
 
     ###ficheiros###
 
-    diretorio_atual = os.getcwd()
+    diretoria_atual = os.getcwd()
 
-    nome_pasta_Encomendas = 'Encomendas'
-    nome_pasta_Clientes = 'Clientes'
-    nome_pasta_Entregas = 'Entregas'
-    nome_pasta_Estafetas = 'Estafetas'
-    nome_pasta_Veiculos = 'Veiculos'
+    pastaEncomendas = os.path.join(diretoria_atual, 'Encomendas')
+    pastaClientes = os.path.join(diretoria_atual, 'Clientes')
+    pastaEntregas = os.path.join(diretoria_atual, 'Entregas')
+    pastaEstafetas = os.path.join(diretoria_atual, 'Estafetas')
+    pastaVeiculos = os.path.join(diretoria_atual, 'Veiculos')
 
-    pasta_anterior_Encomendas = Path(os.path.abspath(os.path.join(diretorio_atual, os.pardir, nome_pasta_Encomendas)))
-    pasta_anterior_Clientes = Path(os.path.abspath(os.path.join(diretorio_atual, os.pardir, nome_pasta_Clientes)))
-    pasta_anterior_Entregas = Path(os.path.abspath(os.path.join(diretorio_atual, os.pardir, nome_pasta_Entregas)))
-    pasta_anterior_Estafetas = Path(os.path.abspath(os.path.join(diretorio_atual, os.pardir, nome_pasta_Estafetas)))
-    pasta_anterior_Veiculos = Path(os.path.abspath(os.path.join(diretorio_atual, os.pardir, nome_pasta_Veiculos)))
+        
+    if not os.path.exists(pastaEncomendas):
+        os.makedirs(pastaEncomendas)
 
-    if not pasta_anterior_Encomendas.exists():
-        pasta_anterior_Encomendas.mkdir()
+    if not os.path.exists(pastaClientes):
+        os.makedirs(pastaClientes)
 
-    if not pasta_anterior_Clientes.exists():
-        pasta_anterior_Clientes.mkdir()
+    if not os.path.exists(pastaEntregas):
+        os.makedirs(pastaEntregas)
 
-    if not pasta_anterior_Entregas.exists():
-        pasta_anterior_Entregas.mkdir()
+    if not os.path.exists(pastaEstafetas):
+        os.makedirs(pastaEstafetas)
 
-    if not pasta_anterior_Estafetas.exists():
-        pasta_anterior_Estafetas.mkdir()
+    if not os.path.exists(pastaVeiculos):
+        os.makedirs(pastaVeiculos)
 
-    if not pasta_anterior_Veiculos.exists():
-        pasta_anterior_Veiculos.mkdir()
+    encomendas_entregues = os.path.join(pastaEncomendas, 'Encomendas_Entregues.txt')
+    encomenda_pendentes = os.path.join(pastaEncomendas, 'Encomendas_Pendentes.txt')
+    clientes = os.path.join(pastaClientes, 'Clientes.txt')
+    entregas = os.path.join(pastaEntregas, 'Entregas.txt')
+    estafetas = os.path.join(pastaEstafetas, 'Estafetas.txt')
+    veiculos = os.path.join(pastaVeiculos, 'Veiculos.txt')
 
-    # Crie um caminho para o novo arquivo na pasta anterior
-    caminho_arquivo_Encomendas = os.path.join(pasta_anterior_Encomendas, 'Encomendas.txt')
-    caminho_arquivo_Encomendas_Pendentes = os.path.join(pasta_anterior_Encomendas, 'Encomendas_Pendentes.txt')
-    caminho_arquivo_Clientes = os.path.join(pasta_anterior_Clientes, 'Clientes.txt')
-    caminho_arquivo_Entregas = os.path.join(pasta_anterior_Entregas, 'Entregas.txt')
-    caminho_arquivo_Estafetas = os.path.join(pasta_anterior_Estafetas, 'Estafetas.txt')
-    caminho_arquivo_Veiculos = os.path.join(pasta_anterior_Veiculos, 'Veiculos.txt')
-
-    file = open(caminho_arquivo_Clientes, 'a+')
-    file1 = open(caminho_arquivo_Estafetas, 'a+')
-    file2 = open(caminho_arquivo_Encomendas, 'a+')
-    file3 = open(caminho_arquivo_Encomendas_Pendentes, 'a+')
-    file4 = open(caminho_arquivo_Veiculos, 'a+')
-    file5 = open(caminho_arquivo_Entregas, 'a+')
+    file = open(clientes, 'a+')
+    file1 = open(estafetas, 'a+')
+    file2 = open(encomendas_entregues, 'a+')
+    file3 = open(encomenda_pendentes, 'a+')
+    file4 = open(veiculos, 'a+')
+    file5 = open(entregas, 'a+')
 
     ###Encomendas Pendentes###
 
     def carregar_encomendas_pendentes(self):
-        ficheiro = open(self.caminho_arquivo_Encomendas_Pendentes, 'r')
+        ficheiro = open(self.encomenda_pendentes, 'r')
         for linha in ficheiro:
             if linha.strip():
                 data = linha.strip().split(';')
@@ -78,8 +74,6 @@ class UI:
                     self.m_encomendas_pendentes.append(encomenda)
                 else:
                     print(f"Ignoring line due to incorrect format: {linha}")
-            else:
-                print("Skipping empty line.")
         
     def criar_encomenda(self):
         id_cliente = input("Introduza o id do cliente: ")
@@ -92,13 +86,14 @@ class UI:
 
                 if 0 < volume <= 100:
                     prazoEntrega = int(input("Introduza o prazo de entrega da encomenda em dias: "))
+                    emHoras = prazoEntrega * 24
 
-                    if prazoEntrega > 1:
+                    if emHoras > 0:
                         id_encomenda = str(self.definir_id_encomenda_pendente())
 
-                        encomenda = Encomenda(id_encomenda, id_cliente, peso, volume, prazoEntrega, "Pendente")
+                        encomenda = Encomenda(id_encomenda, id_cliente, peso, volume, emHoras, "Pendente")
 
-                        if not self.valida_tempo(encomenda):
+                        if not self.valida_tempo("Health Planet",encomenda):
                             print("Prazo de entrega impossível de ser cumprido")
                             break
 
@@ -131,30 +126,50 @@ class UI:
         if id_encomenda not in self.m_Encomendas:
             self.m_encomendas_pendentes.append(encomenda)
 
-            ficheiro = open(self.caminho_arquivo_Encomendas_Pendentes, 'a+')
+            ficheiro = open(self.encomenda_pendentes, 'a+')
 
-            ficheiro.write(id_encomenda + ';' + id_cliente + ';' + str(peso) + ';' + str(volume) + ';' + str(prazoEntrega) + ';' + estado + '\n')
+            ficheiro.write(id_encomenda + ";" +id_cliente + ";" + str(peso) + ";" + str(volume) + ";" + str(prazoEntrega) + ";" + estado + '\n')
+            
+    ###Encomendas Entregues###
+            
+    def carregar_encomendas_entregues(self):
+        ficheiro = open(self.encomendas_entregues, 'r')
+        for linha in ficheiro:
+            if linha.strip():
+                data = linha.strip().split(';')
+                if len(data) == 6:
+                    id_encomenda, id_cliente, peso, volume, prazoEntrega, estado = data
+                    encomenda = Encomenda(id_encomenda, id_cliente, peso, volume, prazoEntrega, estado)
+                    self.m_encomendas_entregues.append(encomenda)
+                else:
+                    print(f"Ignoring line due to incorrect format: {linha}")
 
-    ###Processamento de Encomendas###
+    def criar_encomenda_entregue(self, encomenda):
+        id_encomenda = encomenda.getId()
+        id_cliente = encomenda.getClienteId()
+        peso = encomenda.getPeso()
+        volume = encomenda.getVolume()
+        prazoEntrega = encomenda.getPrazo()
+        estado = "Entregue"
 
-    def valida_tempo(self, encomenda):
-        g = Graph()
-        inicio = "Health Planet"
-        fim = self.procura_cliente(encomenda.getClienteId()).getFreguesia()
-        
-        (path, custo) = g.gulosa(self.m_Grafo, inicio, fim)
+        if id_encomenda not in self.m_encomendas_entregues:
+            self.m_encomendas_entregues.append(encomenda)
 
-        tipo_veiculo = self.get_tipo_veiculos(encomenda.getPeso())
+            ficheiro = open(self.encomendas_entregues, 'a+')
+            ficheiro.write(id_encomenda + ";" +id_cliente + ";" + str(peso) + ";" + str(volume) + ";" + str(prazoEntrega) + ";" + estado + '\n')
 
-        velocidade = self.calcula_velocidade(encomenda.getPeso(), tipo_veiculo)
+    def ver_encomendas_entregues(self):
+        for encomenda in self.m_encomendas_entregues:
+            print(encomenda)
 
-        return encomenda.getPrazo() >= custo / velocidade
+    def adicionar_encomenda_entregue(self, encomenda):
+        self.criar_encomenda_entregue(encomenda)
 
     ###Clientes###
         
     def carregar_clientes(self):
         try:
-            with open(self.caminho_arquivo_Clientes, 'r') as ficheiro:
+            with open(self.clientes, 'r') as ficheiro:
                 for linha in ficheiro:
                     if linha.strip():
                         data = linha.strip().split(';')
@@ -164,8 +179,6 @@ class UI:
                             self.m_Clientes.append(cliente)
                         else:
                             print(f"Ignoring line due to incorrect format: {linha}")
-                    else:
-                        print("Skipping empty line.")
         except FileNotFoundError:
             print("File not found or path is incorrect.")
         except Exception as e:
@@ -184,9 +197,9 @@ class UI:
 
                     self.m_Clientes.append(cliente)
 
-                    ficheiro = open(self.caminho_arquivo_Clientes, 'a+')
+                    ficheiro = open(self.clientes, 'a+')
 
-                    ficheiro.write(id_cliente + ';' + nome + ';' + freguesia + '\n')
+                    ficheiro.write(id_cliente + ";" + nome + ";" + freguesia + '\n')
 
                     print("Cliente adicionado com sucesso")
 
@@ -211,7 +224,7 @@ class UI:
 
     def carregar_estafetas(self):
         try:
-            with open(self.caminho_arquivo_Estafetas, 'r') as ficheiro:
+            with open(self.estafetas, 'r') as ficheiro:
                 for linha in ficheiro:
                     if linha.strip():
                         data = linha.strip().split(';')
@@ -232,8 +245,7 @@ class UI:
                             self.m_Estafetas[estafeta] = []
                         else:
                             print(f"Ignoring line due to incorrect format: {linha}")
-                    else:
-                        print("Skipping empty line.")
+                            
         except FileNotFoundError:
             print("File not found or path is incorrect.")
         except Exception as e:
@@ -264,11 +276,11 @@ class UI:
                 if estafeta not in self.m_Estafetas:
                     self.m_Estafetas[estafeta] = []
 
-                    ficheiro = open(self.caminho_arquivo_Estafetas, 'a+')
+                    ficheiro = open(self.estafetas, 'a+')
                     ficheiro.write(id_estafeta + ';' + nome + ';' + str(veiculo) + '\n') # modificar a escrita de valores dos veiculos
 
-                    ficheiro2 = open(self.caminho_arquivo_Veiculos, 'a+')
-                    ficheiro2.write(id_estafeta + ';' + matricula + ';' + tipo_veiculo + '\n')
+                    ficheiro2 = open(self.veiculos, 'a+')
+                    ficheiro2.write(id_estafeta + ';' +  matricula + ';' +tipo_veiculo + '\n')
 
                     print("Estafeta adicionado com sucesso")
                 else:
@@ -290,36 +302,100 @@ class UI:
 
     ###Veiculos###
     
-    def get_tipo_veiculos(self, peso):
-        if peso <= 5:
-            return "Bicicleta"
-        elif peso <= 20:
-            return "Mota"
-        elif peso <= 100:
-            return "Carro"
+    def valida_tempo(self, start,encomenda):
+        g = Graph()
+        end = self.procura_cliente(encomenda.getIdCliente()).getFreguesia()
+
+        dfs = g.procura_DFS(start, end, path=[], visited=set())
+        bfs = g.procura_BFS(start, end,)
+        g.add_heuristica(start,end)
+        AStar = g.procura_aStar(start, end)
+        gulosa = g.gulosa(start, end)
+
+        custo = min(dfs, bfs, AStar, gulosa)
+
+        tipo_veiculo = self.escolherVeiculo(custo, encomenda.getPeso())
+
+        tempo = self.calculaTempoVeiculo(custo,encomenda.getPeso(), tipo_veiculo)
+
+        return encomenda.getPrazo() >= tempo
+
+    def calculaTempoVeiculo(self, custo, peso, tipo_veiculo):
+        velocidades = {
+            "bicicleta": {"vel_max": 10, "decresc": 0.6},
+            "mota": {"vel_max": 35, "decresc": 0.5},
+            "carro": {"vel_max": 50, "decresc": 0.1}
+        }
+
+        if tipo_veiculo not in velocidades:
+            return None  # Tipo de veículo não reconhecido
+
+        vel_max = velocidades[tipo_veiculo]["vel_max"]
+        decresc = velocidades[tipo_veiculo]["decresc"]
+
+        vel_atual = vel_max - (peso * decresc)
+
+        if vel_atual <= 0:
+            return None  # Peso excede capacidade do veículo
+
+        tempo = custo / vel_atual
+        return tempo
+
+    def escolherVeiculo(self, custo, peso):
+        tipo_veiculo = self.get_tipo_veiculos(peso)
+
+        if tipo_veiculo:
+            tempo_bicicleta = self.calculaTempoVeiculo(custo, peso, "bicicleta")
+            tempo_mota = self.calculaTempoVeiculo(custo, peso, "mota")
+            tempo_carro = self.calculaTempoVeiculo(custo, peso, "carro")
+
+            tempos = {
+                "bicicleta": tempo_bicicleta,
+                "mota": tempo_mota,
+                "carro": tempo_carro
+            }
+
+            veiculo_rapido = min((tempo, veiculo) for veiculo, tempo in tempos.items() if tempo is not None)
+            return veiculo_rapido
         else:
-            return None
+            return None  # Peso excede capacidade de todos os veículos
         
-    def calcula_velocidade(self, peso, tipo):
-        if tipo == "Bicicleta":
-            velocidade = 10
-            i = peso
-            while i > 0:
-                velocidade -= 0.6
-                i = i-1
-            return velocidade
-        elif tipo == "Mota":
-            velocidade = 35
-            i = peso
-            while i > 0:
-                velocidade -= 0.5
-                i = i-1
-            return velocidade
-        else:
-            velocidade = 50
-            i = peso
-            while i > 0:
-                velocidade -= 0.1
-                i = i-1
-            return velocidade
+    ###ENTREGAS###
+    
+    def precoEntrega(self,veiculo,prazo,distancia):
+
+        if (float(prazo) >= 24):
+            valorPrazo = 0
+        elif (float(prazo) >= 12):
+            valorPrazo = 5
+        elif (float(prazo) >= 7):
+            valorPrazo = 7
+        elif (float(prazo) < 1):
+            valorPrazo = 10
+            
+        if (float(distancia) >= 10):
+            valordistancia = 8
+        elif (float(distancia) >= 5):
+            valordistancia = 4
+        elif (float(distancia) < 1):
+            valordistancia = 0
+            
+        custoBicicleta = 2
+        custoMota = 5
+        custoCarro = 10
+                    
+        if (veiculo == "bicicleta"):
+            precoEntrega = custoBicicleta + valordistancia + valorPrazo
+        elif (veiculo == "mota"):
+            precoEntrega = custoMota + valordistancia + valorPrazo
+        elif (veiculo == "bicicleta"):
+            precoEntrega = custoCarro + valordistancia + valorPrazo
+            
+        return precoEntrega
+
+
+
+
+
+
         

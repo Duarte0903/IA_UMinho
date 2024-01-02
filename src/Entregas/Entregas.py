@@ -1,20 +1,19 @@
-from Cliente import Cliente as cliente
-from Encomenda import Encomenda as encomenda
+from Cliente.Cliente import *
+from Encomendas.Encomenda import *
 
 class Entrega:
 
-    def __init__( self, id, cliente, estafeta, classificacao, preco, veiculo, caminho, distancia, tempoPrevisto, encomenda, algoritmo):
+    def __init__(self, id, idcliente, idestafeta, idencomenda, avaliacao, preco, matrVeiculo, caminho, distancia, tempoPrevisto):
         self.id = id
-        self.cliente = cliente
-        self.estafeta = estafeta
-        self.classificacao = classificacao
+        self.idcliente = idcliente
+        self.idestafeta = idestafeta
+        self.idencomenda = idencomenda
+        self.avaliacao = avaliacao
         self.preco = preco
-        self.veiculo = veiculo
+        self.matrVeiculo = matrVeiculo
         self.caminho = caminho
         self.distancia = distancia
         self.tempoPrevisto = tempoPrevisto
-        self.encomenda = encomenda
-        self.algoritmo = algoritmo
 
     def setId(self,id):
         self.id = id
@@ -22,23 +21,29 @@ class Entrega:
     def getId(self):
         return self.id
 
-    def setCliente(self, cliente):
-        self.cliente = cliente
+    def setIdCliente(self, idcliente):
+        self.idcliente = idcliente
     
-    def getCliente(self):
-        return self.cliente
+    def getIdCliente(self):
+        return self.idcliente
     
-    def setEstafeta(self, estafeta):
-        self.estafeta = estafeta
+    def setIdEstafeta(self, idestafeta):
+        self.idestafeta = idestafeta
         
-    def getEstafeta(self):
-        return self.estafeta
+    def getIdEstafeta(self):
+        return self.idestafeta
     
-    def setClassificacao(self, classificacao):
-        self.classificacao = classificacao
+    def setIdEncomenda(self, idencomenda):
+        self.idencomenda = idencomenda
         
-    def getClassificacao(self):
-        return self.classificacao
+    def getIdEncomenda(self):
+        return self.idencomenda
+    
+    def setAvaliacao(self, avaliacao):
+        self.avaliacao = avaliacao
+        
+    def getAvaliacao(self):
+        return self.avaliacao
     
     def setPreco(self, preco):
         self.preco = preco
@@ -46,11 +51,11 @@ class Entrega:
     def getPreco(self):
         return self.preco
     
-    def setVeiculo(self, veiculo):
-        self.veiculo = veiculo
+    def setMatrVeiculo(self, matrVeiculo):
+        self.matrVeiculo = matrVeiculo
     
-    def getVeiculo(self):
-        return self.veiculo
+    def getMatrVeiculo(self):
+        return self.matrVeiculo
     
     def setCaminho(self, caminho):
         self.caminho = caminho
@@ -70,21 +75,12 @@ class Entrega:
     def getTempoPrevisto(self):
         return self.tempoPrevisto
     
-    def setEncomenda(self, encomenda):
-        self.encomenda = encomenda
-        
-    def getEncomenda(self):
-        return self.encomenda
-    
-    def setAlgoritmo(self, algoritmo):
-        self.algoritmo = algoritmo
-
-    def getAlgoritmo(self):
-        return self.algoritmo
+    def __str__(self):
+        return "Id: " + str(self.getId()) + "; " + "Cliente: " + str(self.getIdCliente()) + "; " + "Estafeta: " + str(self.getIdEstafeta()) + "; " + "Encomenda: " + str(self.getIdEncomenda()) + "; " + "Avaliação: " + str(self.getAvaliacao()) + "; " + "Custo: " + str(self.getPreco()) + "; " + "Matrícula: " + str(self.getMatrVeiculo()) +"; " +"Caminho: " + str(self.getCaminho()) + "; " + "Distância: " + str(self.getDistancia()) + "; " + "Tempo de Entrega: " + str(self.getTempoPrevisto()) + "; "
     
     def __eq__(self, other):
         if(isinstance(other,Entrega)):
-            return self.id == other.id and self.cliente == other.cliente and self.estafeta == other.estafeta and self.classificacao == other.classificacao and self.preco == other.preco and self.veiculo == other.veiculo and self.caminho == other.caminho and self.tempoPrevisto == other.tempoPrevisto and self.encomenda == other.encomenda and self.algoritmo == other.algoritmo
+            return self.id == other.id and self.cliente == other.cliente and self.estafeta == other.estafeta and self.classificacao == other.classificacao and self.preco == other.preco and self.veiculo == other.veiculo and self.caminho == other.caminho and self.tempoPrevisto == other.tempoPrevisto and self.encomenda == other.encomenda 
         return False
 
 
