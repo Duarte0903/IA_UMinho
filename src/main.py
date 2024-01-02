@@ -19,7 +19,7 @@ def menu_clientes(ui):
                 ui.ver_clientes()
                 l = input("Prima Enter para continuar.")
             elif saida == 3:
-                #ui.avaliar_entrega() TODO
+                ui.avaliar_entrega()
                 l = input("Prima Enter para continuar.")
             elif saida == 0:
                 print("")

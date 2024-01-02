@@ -463,6 +463,35 @@ class UI:
 
         self.reload_encomendas_pendentes()
 
+    ###AVALIACOES###
+        
+    def avaliar_entrega(self):
+        id_cliente = int(input("Qual o seu ID de cliente? "))
+        for entrega in self.m_encomendas_entregues:
+            if entrega.getIdCliente() == id_cliente:
+                print(entrega)
+        id = int(input("Que entrega deseja avaliar? "))
+        entrega_pedida = None
+        for entrega in self.m_encomendas_entregues:
+            if entrega.getId() == id:
+                entrega_pedida = entrega
+        if entrega_pedida == None:
+            print("Entrega não existe")
+
+        avaliacao = input("Como avalia a entrega?")
+
+        if float(avaliacao) > 5 or float(avaliacao) < 0:
+            print("Avaliação introduzida é inválida(0-5)")
+
+        entrega_pedida.setAvaliacao(avaliacao)
+
+        list_estafetas = list(self.m_Estafetas.keys())
+        for estafeta in list_estafetas:
+            if estafeta.getId() == entrega.getIdEstafeta():
+                estafeta.setDisponivel(True)
+
+
+
 
 
 
