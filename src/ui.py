@@ -87,7 +87,13 @@ class UI:
         
     def criar_encomenda(self):
         id_cliente = int(input("Introduza o id do cliente: "))
-        
+        i=0
+        for cliente in self.m_Clientes:
+            teste1 = cliente.getId()
+            if teste1 == id_cliente: 
+                i=1
+                break
+        if i == 0: return print ("Esse cliente não existe!")
         while True:
             peso = float(input("Introduza o peso da encomenda: "))
 
@@ -233,7 +239,7 @@ class UI:
             if teste == "None": return print("Freguesia não existente!")
             
 
-            id_cliente = str(self.definir_id_cliente())
+            id_cliente = self.definir_id_cliente()
 
             if self.procura_cliente(id_cliente) == None:
                 cliente = Cliente(id_cliente, nome, freguesia)
@@ -244,7 +250,7 @@ class UI:
 
                     ficheiro = open(self.clientes, 'a+')
 
-                    ficheiro.write(id_cliente + ";" + nome + ";" + freguesia + '\n')
+                    ficheiro.write(str(id_cliente) + ";" + nome + ";" + freguesia + '\n')
 
                     print("Cliente adicionado com sucesso")
 
