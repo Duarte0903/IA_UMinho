@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://github.com/Duarte0903/IA_UMinho/blob/main/EEUMLOGO.png"/>
+</p>
+
 <h1 align="center">Projeto da UC de Inteligência Artificial - 2023/2024</h1>
 <h2 align="center">Health Planet - Empresa de distribuição</h2>
 
